@@ -2,6 +2,8 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
+// DEPENDS ON OPENGL (Renderer)
+
 #ifndef SHADER_H
 #define SHADER_H
 #include <string>
@@ -15,14 +17,14 @@ public:
 	void CompileFragmentShader();
 	void CompileShaderProgram();
 
-private:
-	const char* m_GlslVersion{};
 	unsigned int m_VertexShader{};
+	std::string m_VertexShaderSource;
+	std::string m_FragmentShaderSource;
 	unsigned int m_FragmentShader{};
 	unsigned int m_ShaderProgram{};
 
-	std::string m_VertexShaderSource;
-	std::string m_FragmentShaderSource;
+private:
+	const char* m_GlslVersion{};
 };
 
 

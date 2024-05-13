@@ -1,6 +1,9 @@
 //
 // Created by Scott Kirila on 2024/04/29.
 //
+
+// SHOULD ONLY DEPEND ON GLFW (HAS MINOR DEPENDENCE ON OPENGL AT THE MOMENT)
+
 #include "Callbacks.h"
 #include "Window.h"
 
@@ -45,7 +48,7 @@ void Window::BeginLoop(void (*functionPtr)()) {
         glClearColor(0.25f, 0.0f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        if (glfwGetKey(m_Window, GLFW_KEY_SPACE)) {
+        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(m_Window, true);
         }
 
