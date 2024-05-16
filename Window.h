@@ -4,6 +4,7 @@
 
 #ifndef WINDOW_H
 #define WINDOW_H
+
 #include <functional>
 
 class GLFWwindow;
@@ -22,7 +23,5 @@ public:
     int m_ViewHeight;
     GLFWwindow* m_Window = nullptr;
 };
-
-
 
 #endif //WINDOW_H

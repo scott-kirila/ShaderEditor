@@ -2,10 +2,6 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-// DEPENDS ON OPENGL (Renderer)
-// Could abstract this away to just depend on the Renderer class
-// This could help with allowing support for HLSL and SPIR-V
-
 #ifndef SHADER_H
 #define SHADER_H
 #include <string>
@@ -29,7 +25,5 @@ private:
 	unsigned int m_FragmentShader{};
 	const char* m_GlslVersion{};
 };
-
-
 
 #endif //SHADER_H

@@ -8,11 +8,11 @@
 #include <iostream>
 
 #include "GUI.h"
+#include "RenderingOpenGL.h"
 #include "Shader.h"
-#include "Renderer.h"
 #include "Window.h"
 
-GUI::GUI(Window* window, Renderer* renderer, const float viewWidth, const float viewHeight, const char* glslVersion) :
+GUI::GUI(Window* window, Rendering::OpenGL* renderer, const float viewWidth, const float viewHeight, const char* glslVersion) :
 m_GlslVersion(glslVersion), m_FramebufferSize(viewWidth, viewHeight),
 m_Window(window), m_Renderer(renderer) {
     // Set up Dear ImGui context
@@ -118,15 +118,15 @@ void GUI::LoopBody() const {
     {
         ImGui::Begin("Render Window");
         const auto viewportSize = ImGui::GetContentRegionAvail();
-        m_Renderer->m_ViewportWidth = static_cast<int>(viewportSize.x);
-        m_Renderer->m_ViewportHeight = static_cast<int>(viewportSize.y);
-        // m_Window->m_ViewWidth = viewportSize.x;
-        // m_Window->m_ViewHeight = viewportSize.y;
+        m_Renderer->m_ViewportSize.x = static_cast<int>(viewportSize.x);
+        m_Renderer->m_ViewportSize.y = static_cast<int>(viewportSize.y);
+        m_Window->m_ViewWidth = static_cast<int>(viewportSize.x);
+        m_Window->m_ViewHeight = static_cast<int>(viewportSize.y);
 
         m_Renderer->Render();
         m_Renderer->Draw();
 
-        ImGui::Image(reinterpret_cast<void *>(m_Renderer->m_TextureColorBuffer),
+        ImGui::Image(reinterpret_cast<ImTextureID>(m_Renderer->m_TextureColorBuffer),
             ImVec2(
                 static_cast<float>(m_Renderer->m_FramebufferSize.x),
                 static_cast<float>(m_Renderer->m_FramebufferSize.y)),

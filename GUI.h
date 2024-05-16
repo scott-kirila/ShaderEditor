@@ -5,16 +5,18 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "Callbacks.h"
-
 #include "imgui.h"
+
 #include <string>
 
-#include "Renderer.h"
+#include "Callbacks.h"
+#include "RenderingOpenGL.h"
 
 class Shader;
 class Window;
-class Renderer;
+namespace Rendering {
+    class OpenGL;
+}
 
 namespace ImGui {
     inline bool InputTextMultiline(const char* label, std::string* str, const ImVec2& size, ImGuiInputTextFlags flags)
@@ -28,7 +30,7 @@ namespace ImGui {
 
 class GUI {
 public:
-    GUI(Window* window, Renderer* renderer, float viewWidth, float viewHeight, const char* glslVersion);
+    GUI(Window* window, Rendering::OpenGL* renderer, float viewWidth, float viewHeight, const char* glslVersion);
     ~GUI();
 
     void Loop();
@@ -40,9 +42,8 @@ private:
 
     const char* m_GlslVersion;
     ImVec2 m_FramebufferSize;
-    ImVec4 m_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     Window* m_Window;
-    Renderer* m_Renderer;
+    Rendering::OpenGL* m_Renderer;
     ImGuiIO* m_IO;
     bool m_ShowDemoWindow = false;
 };

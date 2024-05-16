@@ -2,10 +2,10 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include "Shader.h"
-
 #include <glad/glad.h>
 #include <iostream>
+
+#include "Shader.h"
 
 std::string vertexShaderSource =
 R"(

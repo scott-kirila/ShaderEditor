@@ -8,16 +8,16 @@ add_executable(ShaderEditor main.cpp
         callbacks.h
         Window.cpp
         Window.h
-        Window.h
         GUI.cpp
-        GUI.h
         GUI.h
         Shader.cpp
         Shader.h
-        Shader.h
-        Renderer.cpp
-        Renderer.h
-        Renderer.h)
+        RenderingOpenGL.cpp
+        RenderingOpenGL.h
+        Vector.h
+        RenderingBase.cpp
+        RenderingBase.h
+)
 
 find_package(OpenGL REQUIRED)
 

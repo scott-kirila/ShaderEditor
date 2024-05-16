@@ -1,15 +1,18 @@
 //
 // Created by Scott Kirila on 2024/04/29.
 //
-#include "Window.h"
-#include "Shader.h"
-#include "Renderer.h"
 
 #include <glad/glad.h>
 #include <iostream>
 
-Renderer::Renderer(Window* window, Shader* shader) : m_Shader(shader),
-m_FramebufferSize(window->m_ViewWidth, window->m_ViewHeight), m_Window(window) {
+#include "RenderingOpenGL.h"
+#include "Shader.h"
+#include "Window.h"
+
+using namespace Rendering;
+
+OpenGL::OpenGL(Window* window, Shader* shader)
+: Base(window, shader) {
 
     glGenVertexArrays(1, &m_ArrayBuffer);
     glGenBuffers(1, &m_VertexBuffer);
@@ -53,7 +56,7 @@ m_FramebufferSize(window->m_ViewWidth, window->m_ViewHeight), m_Window(window) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-Renderer::~Renderer() {
+OpenGL::~OpenGL() {
     std::cout << "Renderer\n";
     glBindBuffer(GL_RENDERBUFFER, 0);
     glBindBuffer(GL_FRAMEBUFFER, 0);
@@ -62,7 +65,7 @@ Renderer::~Renderer() {
     glBindVertexArray(0);
 }
 
-void Renderer::Render() {
+void OpenGL::Render() {
     if (m_FramebufferSize.x != m_ViewportSize.x || m_FramebufferSize.y != m_ViewportSize.y) {
         m_FramebufferSize.x = m_ViewportSize.x;
         m_FramebufferSize.y = m_ViewportSize.y;
@@ -92,7 +95,7 @@ void Renderer::Render() {
     }
 }
 
-void Renderer::Draw() const {
+void OpenGL::Draw() const {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -110,10 +113,9 @@ void Renderer::Draw() const {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Renderer::PostRender(const int &x, const int &y) const {
+void OpenGL::PostRender(const int &x, const int &y) const {
 
     glViewport(0, 0, x, y);
     glClearColor(m_ClearColor.x * m_ClearColor.w, m_ClearColor.y * m_ClearColor.w, m_ClearColor.z * m_ClearColor.w, m_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 }
-

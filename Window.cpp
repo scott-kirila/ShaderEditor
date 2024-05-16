@@ -2,14 +2,14 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include "Callbacks.h"
-#include "Window.h"
-
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 #include <iostream>
 #include <exception>
+
+#include "Callbacks.h"
+#include "Window.h"
 
 Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
