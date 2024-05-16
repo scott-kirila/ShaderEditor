@@ -10,18 +10,38 @@
 #include <imgui.h>
 
 class Window;
+class Shader;
+
+struct Vector2D {
+    Vector2D() : x(0), y(0) {}
+    Vector2D(const int _x, const int _y) : x(_x), y(_y) {}
+
+    int x;
+    int y;
+};
 
 class Renderer {
 public:
-    Renderer(Window* window);
+    Renderer(Window* window, Shader* shader);
     ~Renderer();
 
-    Window* m_Window;
+    void Render();
+    void Draw() const;
+    void PostRender(const int &x, const int &y) const;
+
+    Shader* m_Shader;
+    // int m_ViewportWidth{};
+    // int m_ViewportHeight{};
+    unsigned int m_TextureColorBuffer{};
+    Vector2D m_ViewportSize{};
+    Vector2D m_FramebufferSize{};
+
+private:
     unsigned int m_VertexBuffer{};
     unsigned int m_ArrayBuffer{};
-    unsigned int m_FrameBuffer{};
-    unsigned int m_TextureColorBuffer{};
+    unsigned int m_Framebuffer{};
     unsigned int m_RenderBuffer{};
+
     float m_Vertices[30] = {
         // positions         // texCoords
         -1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
@@ -32,7 +52,9 @@ public:
          1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
          1.0f,  1.0f, 0.0f,  1.0f, 1.0f
     };
-    ImVec2 m_FrameBufferSize;
+
+    ImVec4 m_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    Window* m_Window;
 };
 
 

@@ -3,6 +3,8 @@
 //
 
 // DEPENDS ON OPENGL (Renderer)
+// Could abstract this away to just depend on the Renderer class
+// This could help with allowing support for HLSL and SPIR-V
 
 #ifndef SHADER_H
 #define SHADER_H
@@ -13,17 +15,18 @@ public:
 	explicit Shader(const char* glslVersion);
 	~Shader();
 
-	void CompileVertexShader();
-	void CompileFragmentShader();
 	void CompileShaderProgram();
 
-	unsigned int m_VertexShader{};
 	std::string m_VertexShaderSource;
 	std::string m_FragmentShaderSource;
-	unsigned int m_FragmentShader{};
 	unsigned int m_ShaderProgram{};
 
 private:
+	void CompileVertexShader();
+	void CompileFragmentShader();
+
+	unsigned int m_VertexShader{};
+	unsigned int m_FragmentShader{};
 	const char* m_GlslVersion{};
 };
 

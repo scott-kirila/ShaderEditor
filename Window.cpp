@@ -2,8 +2,6 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-// SHOULD ONLY DEPEND ON GLFW (HAS MINOR DEPENDENCE ON OPENGL AT THE MOMENT)
-
 #include "Callbacks.h"
 #include "Window.h"
 
@@ -13,7 +11,7 @@
 #include <iostream>
 #include <exception>
 
-Window::Window(int viewWidth, int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
+Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
 
     glfwInit();
@@ -38,24 +36,35 @@ Window::Window(int viewWidth, int viewHeight) : m_ViewWidth(viewWidth), m_ViewHe
 }
 
 Window::~Window() {
+    std::cout << "Window\n";
     glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
 
-void Window::BeginLoop(void (*functionPtr)()) {
+void Window::BeginLoop(const std::function<void(void)> &fcn) const {
     while (!glfwWindowShouldClose(m_Window)) {
-
-        glClearColor(0.25f, 0.0f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
         if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(m_Window, true);
         }
 
-        (*functionPtr)();
+        fcn();
 
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
     }
+}
+
+void Window::GetWindowSize(int* x, int* y) const {
+    glfwGetFramebufferSize(m_Window, x, x);
+}
+
+double Window::GetTime() {
+    return glfwGetTime();
+}
+
+void Window::BackupCurrentContext() {
+    GLFWwindow* backup_current_context = glfwGetCurrentContext();
+    glfwMakeContextCurrent(backup_current_context);
 }
 
