@@ -7,10 +7,27 @@
 
 #include <iostream>
 
+#include "Callbacks.h"
 #include "GUI.h"
 #include "RenderingOpenGL.h"
 #include "Shader.h"
 #include "Window.h"
+
+namespace ImGui {
+    bool InputTextMultiline(const char* label, std::string* str, const ImVec2& size, ImGuiInputTextFlags flags,
+                               const ImGuiInputTextCallback callback, void* user_data)
+    {
+        IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
+        flags |= ImGuiInputTextFlags_CallbackResize;
+
+        InputTextCallback_UserData cb_user_data;
+        cb_user_data.Str = str;
+        cb_user_data.ChainCallback = callback;
+        cb_user_data.ChainCallbackUserData = user_data;
+
+        return InputTextMultiline(label, const_cast<char *>(str->c_str()), str->capacity() + 1, size, flags, callback, &cb_user_data);
+    }
+}
 
 GUI::GUI(Window* window, Rendering::OpenGL* renderer, const float viewWidth, const float viewHeight, const char* glslVersion) :
 m_GlslVersion(glslVersion), m_FramebufferSize(viewWidth, viewHeight),
@@ -105,8 +122,11 @@ void GUI::LoopBody() const {
         ImGui::Begin("Fragment Shader");
 
         static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
-        ImGui::InputTextMultiline("User Input", &m_Renderer->m_Shader->m_FragmentShaderSource,
-            ImVec2(-FLT_MIN, -ImGui::GetTextLineHeight() * 5), flags);
+
+        const auto textSize = ImVec2(-FLT_MIN, -ImGui::GetTextLineHeight() * 5);
+        InputTextCallback_UserData ud;
+        ud.Str = &m_Renderer->m_Shader->m_FragmentShaderSource;
+        ImGui::InputTextMultiline("User Input", ud.Str, textSize, flags, Callbacks::InputTextCallback, &ud);
 
         if (ImGui::Button("Recompile")) {
             std::cout << "Recompiling..." << std::endl;

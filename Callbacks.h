@@ -4,16 +4,24 @@
 
 #ifndef CALLBACKS_H
 #define CALLBACKS_H
+#include <imgui.h>
 
-class ImGuiInputTextCallbackData;
+#include <iostream>
+
+struct InputTextCallback_UserData {
+
+    std::string* Str{};
+    ImGuiInputTextCallback ChainCallback{};
+    void* ChainCallbackUserData{};
+};
 
 class Callbacks {
 public:
+    static int InputTextCallback(ImGuiInputTextCallbackData* data);
+
     static int TextResizeCallback(ImGuiInputTextCallbackData* data);
 
     static void GlfwErrorCallback(int error, const char* description);
 };
-
-
 
 #endif //CALLBACKS_H

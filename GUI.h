@@ -9,23 +9,12 @@
 
 #include <string>
 
-#include "Callbacks.h"
 #include "RenderingOpenGL.h"
 
 class Shader;
 class Window;
 namespace Rendering {
     class OpenGL;
-}
-
-namespace ImGui {
-    inline bool InputTextMultiline(const char* label, std::string* str, const ImVec2& size, ImGuiInputTextFlags flags)
-    {
-        IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
-        flags |= ImGuiInputTextFlags_CallbackResize;
-
-        return InputTextMultiline(label, const_cast<char *>(str->c_str()), str->capacity() + 1, size, flags | ImGuiInputTextFlags_CallbackResize, Callbacks::TextResizeCallback, (void*)str);
-    }
 }
 
 class GUI {
