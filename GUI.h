@@ -7,8 +7,6 @@
 
 #include "imgui.h"
 
-#include <string>
-
 #include "RenderingOpenGL.h"
 
 class Shader;

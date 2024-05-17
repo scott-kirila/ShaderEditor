@@ -2,11 +2,11 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-
 #include <iostream>
 #include <exception>
+
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 #include "Callbacks.h"
 #include "Window.h"

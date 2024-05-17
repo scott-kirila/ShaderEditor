@@ -2,8 +2,9 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include <glad/glad.h>
 #include <iostream>
+
+#include "glad/glad.h"
 
 #include "RenderingOpenGL.h"
 #include "Shader.h"
