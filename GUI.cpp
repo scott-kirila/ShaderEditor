@@ -9,6 +9,9 @@
 
 #include "Callbacks.h"
 #include "GUI.h"
+
+#include <GLFW/glfw3.h>
+
 #include "RenderingOpenGL.h"
 #include "Shader.h"
 #include "Window.h"
@@ -175,9 +178,11 @@ void GUI::LoopTeardown() const {
     // Update and Render additional Platform Windows
     if (m_IO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
+        GLFWwindow* backup_current_context = Window::GetCurrentContext();
+
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
 
-        Window::BackupCurrentContext();
+        Window::BackupCurrentContext(backup_current_context);
     }
 }

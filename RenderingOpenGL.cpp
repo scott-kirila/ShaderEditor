@@ -7,6 +7,7 @@
 #include "glad/glad.h"
 
 #include "RenderingOpenGL.h"
+
 #include "Shader.h"
 #include "Window.h"
 
@@ -120,3 +121,8 @@ void OpenGL::PostRender(const int &x, const int &y) const {
     glClearColor(m_ClearColor.x * m_ClearColor.w, m_ClearColor.y * m_ClearColor.w, m_ClearColor.z * m_ClearColor.w, m_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 }
+
+bool OpenGL::Initialize(void* loadproc) {
+    return gladLoadGLLoader(reinterpret_cast<GLADloadproc>(loadproc));
+}
+

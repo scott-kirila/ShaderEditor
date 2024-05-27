@@ -7,13 +7,13 @@
 
 #include "imgui.h"
 
-#include "RenderingOpenGL.h"
+// #include "RenderingOpenGL.h"
 
 class Shader;
 class Window;
-namespace Rendering {
-    class OpenGL;
-}
+namespace Rendering { class OpenGL; }
+
+// using Rendering::OpenGL;
 
 class GUI {
 public:
@@ -32,7 +32,7 @@ private:
     Window* m_Window;
     Rendering::OpenGL* m_Renderer;
     ImGuiIO* m_IO;
-    bool m_ShowDemoWindow = false;
+    bool m_ShowDemoWindow = true;
 };
 
 #endif //GUI_H

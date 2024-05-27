@@ -21,6 +21,8 @@ namespace Rendering {
         void Draw() const override;
         void PostRender(const int &x, const int &y) const override;
 
+        static bool Initialize(void* loadproc);
+
         unsigned int m_TextureColorBuffer{};
 
     private:

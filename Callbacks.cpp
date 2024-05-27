@@ -32,9 +32,13 @@
 
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
+
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
+        std::cout << data->CursorPos << "\n";
+
+
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         ImGuiContext& g = *GImGui;
         ImGuiIO& io = g.IO;

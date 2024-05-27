@@ -5,11 +5,12 @@
 #include <iostream>
 #include <exception>
 
-#include "glad/glad.h"
+// #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 #include "Callbacks.h"
 #include "Window.h"
+#include "RenderingOpenGL.h" // NOT AN IDEAL DEPENDENCY HERE (CAN IT BE MOVED TO GUI?)
 
 Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
@@ -29,7 +30,8 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
-    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+    // if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+    if (!Rendering::OpenGL::Initialize(glfwGetProcAddress))
     {
         throw std::exception("Failed to initialize GLAD.");
     }
@@ -44,14 +46,15 @@ Window::~Window() {
 void Window::BeginLoop(const std::function<void(void)> &fcn) const {
     while (!glfwWindowShouldClose(m_Window)) {
 
-        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE)) {
-            glfwSetWindowShouldClose(m_Window, true);
-        }
+        glfwPollEvents();
 
         fcn();
 
         glfwSwapBuffers(m_Window);
-        glfwPollEvents();
+
+        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE)) {
+            glfwSetWindowShouldClose(m_Window, true);
+        }
     }
 }
 
@@ -63,8 +66,11 @@ double Window::GetTime() {
     return glfwGetTime();
 }
 
-void Window::BackupCurrentContext() {
-    GLFWwindow* backup_current_context = glfwGetCurrentContext();
-    glfwMakeContextCurrent(backup_current_context);
+GLFWwindow* Window::GetCurrentContext() {
+    return glfwGetCurrentContext();
+}
+
+void Window::BackupCurrentContext(GLFWwindow* current_context) {
+    glfwMakeContextCurrent(current_context);
 }
 
