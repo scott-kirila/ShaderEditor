@@ -14,7 +14,7 @@ namespace Rendering {
 
     class OpenGL final : public Base {
     public:
-        OpenGL(Window* window, Shader* shader);
+        OpenGL(Window* window, const char* shaderVersion);
         ~OpenGL() override;
 
         void Render() override;

@@ -12,8 +12,10 @@
 
 using namespace Rendering;
 
-OpenGL::OpenGL(Window* window, Shader* shader)
-: Base(window, shader) {
+OpenGL::OpenGL(Window* window, const char* shaderVersion)
+: Base(window, shaderVersion) {
+
+    m_Shader = std::make_unique<Shader>(shaderVersion);
 
     glGenVertexArrays(1, &m_ArrayBuffer);
     glGenBuffers(1, &m_VertexBuffer);

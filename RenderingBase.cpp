@@ -7,8 +7,8 @@
 
 using namespace Rendering;
 
-Base::Base(Window *window, Shader *shader)
-: m_Shader(shader), m_FramebufferSize(window->m_ViewWidth, window->m_ViewHeight), m_Window(window) {}
+Base::Base(Window *window, const char* shaderVersion)
+: m_ShaderVersion(shaderVersion), m_FramebufferSize(window->m_ViewWidth, window->m_ViewHeight), m_Window(window) {}
 
 Base::~Base() {
     m_Window = nullptr;

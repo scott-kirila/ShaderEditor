@@ -5,6 +5,8 @@
 #ifndef RENDERERBASE_H
 #define RENDERERBASE_H
 
+#include <memory>
+
 #include "Vector.h"
 
 class Window;
@@ -14,7 +16,7 @@ namespace Rendering {
 
     class Base {
     public:
-        Base(Window* window, Shader* shader);
+        Base(Window* window, const char* shaderVersion);
 
         virtual ~Base();
 
@@ -22,7 +24,8 @@ namespace Rendering {
         virtual void Draw() const = 0;
         virtual void PostRender(const int &x, const int &y) const = 0;
 
-        Shader* m_Shader;
+        const char* m_ShaderVersion;
+        std::unique_ptr<Shader> m_Shader{};
         Vector2Di m_ViewportSize{};
         Vector2Di m_FramebufferSize{};
 
