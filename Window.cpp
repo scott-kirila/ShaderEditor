@@ -10,7 +10,6 @@
 
 #include "Callbacks.h"
 #include "Window.h"
-#include "RenderingOpenGL.h" // NOT AN IDEAL DEPENDENCY HERE (CAN IT BE MOVED TO GUI?)
 
 Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
@@ -30,8 +29,8 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
-    Rendering::OpenGL::Initialize(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
-    // gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
+    // Rendering::OpenGL::Initialize(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
+    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 
     // if (!Rendering::OpenGL::Initialize(reinterpret_cast<void*(*)(const char*)>(glfwGetProcAddress)))
     // // if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))

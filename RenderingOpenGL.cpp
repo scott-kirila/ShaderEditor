@@ -7,9 +7,6 @@
 #include "glad/glad.h"
 
 #include "RenderingOpenGL.h"
-
-#include <GLFW/glfw3.h>
-
 #include "Shader.h"
 #include "Window.h"
 
@@ -17,10 +14,6 @@ using namespace Rendering;
 
 OpenGL::OpenGL(Window* window, Shader* shader)
 : Base(window, shader) {
-
-    // Initialize(m_Window->GetProcAddress);
-    // Initialize(Window::GetProcAddress());
-    // gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
 
     glGenVertexArrays(1, &m_ArrayBuffer);
     glGenBuffers(1, &m_VertexBuffer);
@@ -127,21 +120,3 @@ void OpenGL::PostRender(const int &x, const int &y) const {
     glClearColor(m_ClearColor.x * m_ClearColor.w, m_ClearColor.y * m_ClearColor.w, m_ClearColor.z * m_ClearColor.w, m_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 }
-
-bool OpenGL::Initialize(const GLADloadproc getProcAddress) {
-    return gladLoadGLLoader(getProcAddress);
-}
-
-// bool OpenGL::Initialize(std::function<void *(const char *)> getProcAddress) {
-//
-//     // return gladLoadGLLoader(getProcAddress);
-//     typedef void* function_t(const char*);
-//     const auto ptr_fun = getProcAddress.target<function_t>();
-//     return gladLoadGLLoader(ptr_fun);
-//     // return true;
-// }
-//
-// bool OpenGL::Initialize(void* (*load_proc)(const char*)) {
-//     return gladLoadGLLoader(load_proc);
-// }
-
