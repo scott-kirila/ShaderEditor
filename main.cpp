@@ -3,7 +3,6 @@
 
 #include "GUI.h"
 #include "RenderingOpenGL.h"
-#include "Shader.h"
 #include "Window.h"
 
 constexpr int g_ViewWidth = 1920;
@@ -12,10 +11,9 @@ auto g_GlslVersion = "#version 330\n";
 
 int main() {
 
-    auto window = Window(g_ViewWidth, g_ViewHeight);
-    // auto shader = Shader(g_GlslVersion);
-    auto renderer = Rendering::OpenGL(&window, g_GlslVersion); // &shader);
-    auto gui = GUI(&window, &renderer, g_ViewWidth, g_ViewHeight, g_GlslVersion);
+    const auto window = std::make_shared<Window>(g_ViewWidth, g_ViewHeight);
+    auto renderer = Rendering::OpenGL(window.get(), g_GlslVersion);
+    auto gui = GUI(window.get(), &renderer, g_ViewWidth, g_ViewHeight, g_GlslVersion);
 
     gui.Loop();
 

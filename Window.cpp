@@ -29,14 +29,9 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
-    // Rendering::OpenGL::Initialize(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
-    gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
-
-    // if (!Rendering::OpenGL::Initialize(reinterpret_cast<void*(*)(const char*)>(glfwGetProcAddress)))
-    // // if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
-    // {
-    //     throw std::exception("Failed to initialize GLAD.");
-    // }
+    if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+        throw std::exception("Failed to initialize GLAD.");
+    }
 }
 
 Window::~Window() {

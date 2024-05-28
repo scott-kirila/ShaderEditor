@@ -6,9 +6,9 @@
 #define RENDERER_H
 
 #include "RenderingBase.h"
-#include "Shader.h"
 
 class Window;
+class Shader;
 
 namespace Rendering {
 
@@ -22,6 +22,7 @@ namespace Rendering {
         void PostRender(const int &x, const int &y) const override;
 
         std::unique_ptr<Shader> m_Shader;
+
         unsigned int m_TextureColorBuffer{};
 
     private:

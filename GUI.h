@@ -7,13 +7,9 @@
 
 #include "imgui.h"
 
-// #include "RenderingOpenGL.h"
-
 class Shader;
 class Window;
 namespace Rendering { class OpenGL; }
-
-// using Rendering::OpenGL;
 
 class GUI {
 public:

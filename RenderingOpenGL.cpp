@@ -7,12 +7,13 @@
 #include "glad/glad.h"
 
 #include "RenderingOpenGL.h"
+#include "Shader.h"
 #include "Window.h"
 
 using namespace Rendering;
 
 OpenGL::OpenGL(Window* window, const char* shaderVersion)
-: Base(window, shaderVersion) {
+    : Base(window, shaderVersion) {
 
     m_Shader = std::make_unique<Shader>(shaderVersion);
 

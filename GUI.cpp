@@ -7,11 +7,10 @@
 
 #include <iostream>
 
+#include "GLFW/glfw3.h"
+
 #include "Callbacks.h"
 #include "GUI.h"
-
-#include <GLFW/glfw3.h>
-
 #include "RenderingOpenGL.h"
 #include "Shader.h"
 #include "Window.h"
@@ -37,9 +36,9 @@ namespace ImGui {
     }
 }
 
-GUI::GUI(Window* window, Rendering::OpenGL* renderer, const float viewWidth, const float viewHeight, const char* glslVersion) :
-m_GlslVersion(glslVersion), m_FramebufferSize(viewWidth, viewHeight),
-m_Window(window), m_Renderer(renderer) {
+GUI::GUI(Window* window, Rendering::OpenGL* renderer, const float viewWidth, const float viewHeight, const char* glslVersion)
+    : m_GlslVersion(glslVersion), m_FramebufferSize(viewWidth, viewHeight),
+      m_Window(window), m_Renderer(renderer) {
     // Set up Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
