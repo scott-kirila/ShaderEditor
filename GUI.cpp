@@ -21,7 +21,7 @@ namespace ImGui {
     {
         IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
         flags |= ImGuiInputTextFlags_CallbackResize;
-        // flags |= ImGuiInputTextFlags_CallbackAlways;
+        flags |= ImGuiInputTextFlags_CallbackAlways;
         // flags |= ImGuiInputTextFlags_CallbackCharFilter;
         // flags |= ImGuiInputTextFlags_CallbackCompletion;
         // flags |= ImGuiInputTextFlags_CallbackEdit;
