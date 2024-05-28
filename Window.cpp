@@ -5,7 +5,7 @@
 #include <iostream>
 #include <exception>
 
-// #include "glad/glad.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 #include "Callbacks.h"
@@ -30,11 +30,14 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
-    // if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
-    if (!Rendering::OpenGL::Initialize(glfwGetProcAddress))
-    {
-        throw std::exception("Failed to initialize GLAD.");
-    }
+    Rendering::OpenGL::Initialize(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
+    // gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
+
+    // if (!Rendering::OpenGL::Initialize(reinterpret_cast<void*(*)(const char*)>(glfwGetProcAddress)))
+    // // if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+    // {
+    //     throw std::exception("Failed to initialize GLAD.");
+    // }
 }
 
 Window::~Window() {
@@ -60,6 +63,10 @@ void Window::BeginLoop(const std::function<void(void)> &fcn) const {
 
 void Window::GetWindowSize(int* x, int* y) const {
     glfwGetFramebufferSize(m_Window, x, x);
+}
+
+std::function<void *(const char *)> Window::GetProcAddress() {
+    return glfwGetProcAddress;
 }
 
 double Window::GetTime() {

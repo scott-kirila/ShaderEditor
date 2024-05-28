@@ -5,6 +5,10 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <functional>
+
+#include <glad/glad.h>
+
 #include "RenderingBase.h"
 
 class Window;
@@ -21,7 +25,8 @@ namespace Rendering {
         void Draw() const override;
         void PostRender(const int &x, const int &y) const override;
 
-        static bool Initialize(void* loadproc);
+        static bool Initialize(GLADloadproc getProcAddress);
+        // static bool Initialize(std::function<void*(const char *)> getProcAddress);
 
         unsigned int m_TextureColorBuffer{};
 
