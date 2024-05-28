@@ -12,6 +12,6 @@ Base::Base(Window *window, const char* shaderVersion)
 
 Base::~Base() {
     m_Window = nullptr;
-    m_Shader = nullptr;
+    // m_Shader = nullptr;
 }
 

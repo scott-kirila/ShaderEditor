@@ -7,7 +7,6 @@
 #include "glad/glad.h"
 
 #include "RenderingOpenGL.h"
-#include "Shader.h"
 #include "Window.h"
 
 using namespace Rendering;
