@@ -12,6 +12,11 @@
 
 #include "Callbacks.h"
 
+#include <list>
+#include <vector>
+
+#include "TextCompletion.h"
+
 #define STB_TEXTEDIT_K_LEFT         0x200000 // keyboard input to move cursor left
 #define STB_TEXTEDIT_K_RIGHT        0x200001 // keyboard input to move cursor right
 #define STB_TEXTEDIT_K_UP           0x200002 // keyboard input to move cursor up
@@ -30,37 +35,52 @@
 #define STB_TEXTEDIT_K_PGDOWN       0x20000F // keyboard input to move cursor down a page
 #define STB_TEXTEDIT_K_SHIFT        0x400000
 
+
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
+    TextCompletion text_completion{};
+
+
+// #pragma endregion
 
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
-        std::cout << data->CursorPos << "\n";
+#pragma region Cursor Control Example
+        static bool canInitCursorPos = true;
+        static bool canUpdateCursorPos = true;
+        static int lastCursorPos{-1};
+        static int moveCount{};
 
-
-        ImGuiWindow* window = ImGui::GetCurrentWindow();
-        ImGuiContext& g = *GImGui;
-        ImGuiIO& io = g.IO;
-        const char* label = "User Input";
-        const ImGuiID id = window->GetID(label);
-        ImGuiInputTextState* state = ImGui::GetInputTextState(id);
-
-        const int k_mask = (io.KeyShift ? STB_TEXTEDIT_K_SHIFT : 0);
-        bool is_multiline = true;
-
-        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow) && is_multiline) {
-            // state->OnKeyPressed(STB_TEXTEDIT_K_UP | k_mask);
-
+        // Testing how to handle cursor control
+        if (lastCursorPos == -1 && canInitCursorPos) {
+            lastCursorPos = data->CursorPos;
+            canInitCursorPos = false;
         }
-        // STB_TEXTEDIT_K_WORDLEFT, _LEFT
-        // STB_TEXTEDIT_K_WORDRIGHT, _RIGHT
-        // STB_TEXTEDIT_K_UP, _DOWN
-        // STB_TEXTEDIT_K_LINESTART, _LINEEND
-        // STB_TEXTEDIT_K_TEXTSTART, _TEXTEND
-        // STB_TEXTEDIT_K_PGUP, _PGDOWN
 
-        // g.PlatformImeData.InputPos ?
+        if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
+            moveCount++;
+            std::cout << moveCount << "\n";
+            lastCursorPos = data->CursorPos;
+        }
+
+        if (moveCount >= 10 && canUpdateCursorPos) {
+            canUpdateCursorPos = false;
+        }
+
+        if (!canUpdateCursorPos) {
+            data->CursorPos = lastCursorPos;
+        }
+#pragma endregion
+    }
+    else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
+
+        text_completion.PopulateMatches(data);
+
+        for (const auto& match : text_completion.Matches) {
+            std::cout << match << ", ";
+        }
+        std::cout << "\n";
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
     {

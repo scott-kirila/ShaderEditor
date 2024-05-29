@@ -24,7 +24,7 @@ namespace ImGui {
         // flags |= ImGuiInputTextFlags_CallbackAlways;
         // flags |= ImGuiInputTextFlags_CallbackCharFilter;
         // flags |= ImGuiInputTextFlags_CallbackCompletion;
-        // flags |= ImGuiInputTextFlags_CallbackEdit;
+        flags |= ImGuiInputTextFlags_CallbackEdit;
         // flags |= ImGuiInputTextFlags_CallbackHistory;
 
         InputTextCallback_UserData cb_user_data;
