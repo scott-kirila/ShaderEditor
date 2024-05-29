@@ -39,54 +39,48 @@
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
     TextCompletion text_completion{};
-// #pragma region AutoComplete MetaData
-//     const std::list<std::string> commandsList = {
-//         "vec2", "vec3", "vec4",
-//         "int", "float",
-//         "sin", "cos",
-//         "sampler2D", "texture", "uniform",
-//         "ViewportSize",
-//         "gl_FragCoord",
-//     };
-//
-//     static std::vector<std::string> s_CandidatesList{};
-//
-//     static bool canInitCursorPos = true;
-//     static bool canUpdateCursorPos = true;
-//     static int lastCursorPos{-1};
-//     static int moveCount{};
+
+
 // #pragma endregion
 
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
 #pragma region Cursor Control Example
-        // // Testing how to handle cursor control
-        // if (lastCursorPos == -1 && canInitCursorPos) {
-        //     lastCursorPos = data->CursorPos;
-        //     canInitCursorPos = false;
-        // }
-        //
-        // if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
-        //     moveCount++;
-        //     std::cout << moveCount << "\n";
-        //     lastCursorPos = data->CursorPos;
-        // }
-        //
-        // if (moveCount >= 10 && canUpdateCursorPos) {
-        //     canUpdateCursorPos = false;
-        // }
-        //
-        // if (!canUpdateCursorPos) {
-        //     data->CursorPos = lastCursorPos;
-        // }
+        static bool canInitCursorPos = true;
+        static bool canUpdateCursorPos = true;
+        static int lastCursorPos{-1};
+        static int moveCount{};
+
+        // Testing how to handle cursor control
+        if (lastCursorPos == -1 && canInitCursorPos) {
+            lastCursorPos = data->CursorPos;
+            canInitCursorPos = false;
+        }
+
+        if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
+            moveCount++;
+            std::cout << moveCount << "\n";
+            lastCursorPos = data->CursorPos;
+        }
+
+        if (moveCount >= 10 && canUpdateCursorPos) {
+            canUpdateCursorPos = false;
+        }
+
+        if (!canUpdateCursorPos) {
+            data->CursorPos = lastCursorPos;
+        }
 #pragma endregion
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
-        // s_CandidatesList.clear();
 
-        std::string test = text_completion.GetCurrentWord(data);
-        std::cout << test << "\n";
+        text_completion.PopulateMatches(data);
+
+        for (const auto& match : text_completion.Matches) {
+            std::cout << match << ", ";
+        }
+        std::cout << "\n";
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
     {

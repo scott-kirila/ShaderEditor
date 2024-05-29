@@ -10,18 +10,20 @@
 
 class TextCompletion {
 public:
-    std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
-    void PopulateMatches();
+    void PopulateMatches(const ImGuiInputTextCallbackData* CallbackData);
+
+    std::vector<std::string> Matches{};
 
 private:
+    std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
+    void ClearResults();
+
     bool canInitCursorPos{true};
     bool canUpdateCursorPos{true};
     int lastCursorPos{-1};
 
     char* CurrentWordStart{};
     char* CurrentWordEnd{};
-
-    std::vector<std::string> Matches{};
 
     const std::list<std::string> Dictionary = {
         "vec2", "vec3", "vec4",

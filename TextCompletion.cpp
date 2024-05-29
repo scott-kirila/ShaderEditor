@@ -23,8 +23,9 @@ std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* Cal
     return currentWord;
 }
 
-void TextCompletion::PopulateMatches() {
-    Matches.clear();
+void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackData) {
+    ClearResults();
+    GetCurrentWord(CallbackData);
 
     if (const int StringLength = static_cast<int>(CurrentWordEnd - CurrentWordStart); StringLength != 0) {
         for (const auto& word : Dictionary) {
@@ -33,4 +34,10 @@ void TextCompletion::PopulateMatches() {
             }
         }
     }
+}
+
+void TextCompletion::ClearResults() {
+    Matches.clear();
+    CurrentWordStart = nullptr;
+    CurrentWordEnd = nullptr;
 }
