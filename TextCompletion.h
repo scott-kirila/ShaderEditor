@@ -11,6 +11,7 @@
 class TextCompletion {
 public:
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
+    void PopulateMatches();
 
 private:
     bool canInitCursorPos{true};

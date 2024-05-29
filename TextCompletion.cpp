@@ -22,3 +22,15 @@ std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* Cal
 
     return currentWord;
 }
+
+void TextCompletion::PopulateMatches() {
+    Matches.clear();
+
+    if (const int StringLength = static_cast<int>(CurrentWordEnd - CurrentWordStart); StringLength != 0) {
+        for (const auto& word : Dictionary) {
+            if (word.compare(0, StringLength, CurrentWordStart, StringLength) == 0) {
+                Matches.push_back(word);
+            }
+        }
+    }
+}
