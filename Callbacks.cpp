@@ -15,6 +15,8 @@
 #include <list>
 #include <vector>
 
+#include "TextCompletion.h"
+
 #define STB_TEXTEDIT_K_LEFT         0x200000 // keyboard input to move cursor left
 #define STB_TEXTEDIT_K_RIGHT        0x200001 // keyboard input to move cursor right
 #define STB_TEXTEDIT_K_UP           0x200002 // keyboard input to move cursor up
@@ -36,63 +38,55 @@
 
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
-#pragma region AutoComplete MetaData
-    const std::list<std::string> commandsList = {
-        "vec2", "vec3", "vec4",
-        "int", "float",
-        "sin", "cos",
-        "sampler2D", "texture", "uniform",
-        "ViewportSize",
-        "gl_FragCoord",
-    };
-
-    static std::vector<std::string> s_CandidatesList{};
-
-    static bool canInitCursorPos = true;
-    static bool canUpdateCursorPos = true;
-    static int lastCursorPos{-1};
-    static int moveCount{};
-#pragma endregion
+    TextCompletion text_completion{};
+// #pragma region AutoComplete MetaData
+//     const std::list<std::string> commandsList = {
+//         "vec2", "vec3", "vec4",
+//         "int", "float",
+//         "sin", "cos",
+//         "sampler2D", "texture", "uniform",
+//         "ViewportSize",
+//         "gl_FragCoord",
+//     };
+//
+//     static std::vector<std::string> s_CandidatesList{};
+//
+//     static bool canInitCursorPos = true;
+//     static bool canUpdateCursorPos = true;
+//     static int lastCursorPos{-1};
+//     static int moveCount{};
+// #pragma endregion
 
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
 #pragma region Cursor Control Example
-        // Testing how to handle cursor control
-        if (lastCursorPos == -1 && canInitCursorPos) {
-            lastCursorPos = data->CursorPos;
-            canInitCursorPos = false;
-        }
-
-        if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
-            moveCount++;
-            std::cout << moveCount << "\n";
-            lastCursorPos = data->CursorPos;
-        }
-
-        if (moveCount >= 10 && canUpdateCursorPos) {
-            canUpdateCursorPos = false;
-        }
-
-        if (!canUpdateCursorPos) {
-            data->CursorPos = lastCursorPos;
-        }
+        // // Testing how to handle cursor control
+        // if (lastCursorPos == -1 && canInitCursorPos) {
+        //     lastCursorPos = data->CursorPos;
+        //     canInitCursorPos = false;
+        // }
+        //
+        // if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
+        //     moveCount++;
+        //     std::cout << moveCount << "\n";
+        //     lastCursorPos = data->CursorPos;
+        // }
+        //
+        // if (moveCount >= 10 && canUpdateCursorPos) {
+        //     canUpdateCursorPos = false;
+        // }
+        //
+        // if (!canUpdateCursorPos) {
+        //     data->CursorPos = lastCursorPos;
+        // }
 #pragma endregion
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
-        s_CandidatesList.clear();
+        // s_CandidatesList.clear();
 
-        char* s_WordEnd = data->Buf + data->CursorPos;
-        char* s_WordStart = s_WordEnd;
-        while (s_WordStart > data->Buf) {
-            if (!isalnum(s_WordStart[-1])) break;
-            s_WordStart--;
-        }
-
-        if (s_WordStart < s_WordEnd) {
-            std::cout.write(s_WordStart, static_cast<int>(s_WordEnd - s_WordStart));
-            std::cout << "\n";
-        }
+        std::string test = text_completion.GetCurrentWord(data);
+        std::cout << test << "\n";
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
     {
