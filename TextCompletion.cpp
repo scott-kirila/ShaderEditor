@@ -55,7 +55,7 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
     // Display
     ImGui::SetNextWindowPos(ImVec2(
         ImGui::GetItemRectMin().x + xPos,
-        ImGui::GetItemRectMin().y + yPos + linePadding));
+        ImGui::GetItemRectMin().y + yPos + linePadding - ImGui::GetScrollY()));
     ImGui::BeginTooltip();
     for (const auto& match : Matches) {
         ImGui::Selectable(match.c_str(), false);

@@ -74,27 +74,8 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
         }
 #pragma endregion
         */
-        // if (!text_completion.Matches.empty()) {
-        //     float linePadding = ImGui::GetTextLineHeightWithSpacing() - ImGui::GetTextLineHeight();
-        //     text_completion.CalcListPos(data);
-        //
-        //     if (
-        //         data->CursorPos < (text_completion.CurrentWordStart - data->Buf)
-        //         ||
-        //         data->CursorPos > (text_completion.CurrentWordEnd - data->Buf)
-        //         ) {
-        //         text_completion.ClearResults();
-        //     }
-        //
-        //     ImGui::SetNextWindowPos(ImVec2(
-        //         ImGui::GetItemRectMin().x + text_completion.xPos,
-        //         ImGui::GetItemRectMin().y + text_completion.yPos + linePadding));
-        //     ImGui::BeginTooltip();
-        //     for (const auto& match : text_completion.Matches) {
-        //         ImGui::Selectable(match.c_str(), false);
-        //     }
-        //     ImGui::EndTooltip();
-        // }
+
+        std::cout << ImGui::GetScrollY() << "\n";
         text_completion.DisplayMatches(data);
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
