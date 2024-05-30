@@ -17,6 +17,8 @@ public:
 
     std::vector<std::string> m_Matches{};
 
+    bool canComplete{};
+
 private:
     void ClearResults();
     void CalcListPos(const ImGuiInputTextCallbackData* CallbackData);

@@ -40,6 +40,7 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 
     if (!m_Matches.empty()) {
         m_SelectedMatch = m_Matches[0];
+        canComplete = true;
     }
 }
 
@@ -64,8 +65,16 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
         ImGui::GetItemRectMin().x + m_XPos,
         ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
 
-    if (ImGui::IsKeyReleased(ImGuiKey_DownArrow)) m_CurrentIndex++;
-    if (ImGui::IsKeyReleased(ImGuiKey_UpArrow)) m_CurrentIndex--;
+    if (ImGui::IsKeyPressed(ImGuiKey_DownArrow, false)) {
+        m_CurrentIndex++;
+        ImGui::GetIO().AddKeyEvent(ImGuiKey_UpArrow, false);
+    }
+
+    if (ImGui::IsKeyPressed(ImGuiKey_UpArrow, false)) {
+        m_CurrentIndex--;
+        ImGui::GetIO().AddKeyEvent(ImGuiKey_DownArrow, false);
+    }
+
     m_CurrentIndex += m_Matches.size();
     m_CurrentIndex %= m_Matches.size();
 
@@ -86,6 +95,7 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
 }
 
 void TextCompletion::ClearResults() {
+    canComplete = false;
     m_SelectedMatch.clear();
     m_Matches.clear();
     m_CurrentWordStart = nullptr;
