@@ -13,6 +13,7 @@
 #include "GUI.h"
 #include "RenderingOpenGL.h"
 #include "Shader.h"
+#include "TextCompletion.h"
 #include "Window.h"
 
 namespace ImGui {
@@ -21,7 +22,7 @@ namespace ImGui {
     {
         IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
         flags |= ImGuiInputTextFlags_CallbackResize;
-        // flags |= ImGuiInputTextFlags_CallbackAlways;
+        flags |= ImGuiInputTextFlags_CallbackAlways;
         // flags |= ImGuiInputTextFlags_CallbackCharFilter;
         // flags |= ImGuiInputTextFlags_CallbackCompletion;
         flags |= ImGuiInputTextFlags_CallbackEdit;

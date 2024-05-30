@@ -8,7 +8,7 @@
 
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "imstb_textedit.h"
+// #include "imstb_textedit.h"
 
 #include "Callbacks.h"
 
@@ -38,7 +38,7 @@
 
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
-    TextCompletion text_completion{};
+    static TextCompletion text_completion{};
 
 
 // #pragma endregion
@@ -46,6 +46,7 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
+        /*
 #pragma region Cursor Control Example
         static bool canInitCursorPos = true;
         static bool canUpdateCursorPos = true;
@@ -72,6 +73,29 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
             data->CursorPos = lastCursorPos;
         }
 #pragma endregion
+        */
+        // if (!text_completion.Matches.empty()) {
+        //     float linePadding = ImGui::GetTextLineHeightWithSpacing() - ImGui::GetTextLineHeight();
+        //     text_completion.CalcListPos(data);
+        //
+        //     if (
+        //         data->CursorPos < (text_completion.CurrentWordStart - data->Buf)
+        //         ||
+        //         data->CursorPos > (text_completion.CurrentWordEnd - data->Buf)
+        //         ) {
+        //         text_completion.ClearResults();
+        //     }
+        //
+        //     ImGui::SetNextWindowPos(ImVec2(
+        //         ImGui::GetItemRectMin().x + text_completion.xPos,
+        //         ImGui::GetItemRectMin().y + text_completion.yPos + linePadding));
+        //     ImGui::BeginTooltip();
+        //     for (const auto& match : text_completion.Matches) {
+        //         ImGui::Selectable(match.c_str(), false);
+        //     }
+        //     ImGui::EndTooltip();
+        // }
+        text_completion.DisplayMatches(data);
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
 
