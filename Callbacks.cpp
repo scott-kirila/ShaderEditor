@@ -39,10 +39,6 @@
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
     static TextCompletion text_completion{};
-
-
-// #pragma endregion
-
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
     if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
@@ -74,18 +70,10 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
         }
 #pragma endregion
         */
-
-        std::cout << ImGui::GetScrollY() << "\n";
         text_completion.DisplayMatches(data);
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
-
         text_completion.PopulateMatches(data);
-
-        for (const auto& match : text_completion.Matches) {
-            std::cout << match << ", ";
-        }
-        std::cout << "\n";
     }
     else if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
     {

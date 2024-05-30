@@ -6,6 +6,8 @@
 
 #include "TextCompletion.h"
 
+#include <iostream>
+
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
     char* wordStart = wordEnd;
@@ -17,8 +19,8 @@ std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* Cal
     const int StringLength = static_cast<int>(wordEnd - wordStart);
     auto currentWord = std::string(wordStart, StringLength);
 
-    CurrentWordStart = wordStart;
-    CurrentWordEnd = wordEnd;
+    m_CurrentWordStart = wordStart;
+    m_CurrentWordEnd = wordEnd;
 
     return currentWord;
 }
@@ -27,46 +29,63 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
     ClearResults();
     GetCurrentWord(CallbackData);
 
-    if (const int StringLength = static_cast<int>(CurrentWordEnd - CurrentWordStart); StringLength != 0) {
-        for (const auto& word : Dictionary) {
-            if (word.compare(0, StringLength, CurrentWordStart, StringLength) == 0) {
-                Matches.push_back(word);
+    if (const int StringLength = static_cast<int>(m_CurrentWordEnd - m_CurrentWordStart); StringLength != 0) {
+        for (const auto& word : m_Dictionary) {
+            if (word.compare(0, StringLength, m_CurrentWordStart, StringLength) == 0) {
+                m_Matches.push_back(word);
             }
         }
+    }
+
+    if (!m_Matches.empty()) {
+        m_SelectedMatch = m_Matches[0];
     }
 }
 
 // Should be called every frame.
 void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackData) {
-    if (Matches.empty()) return;
+    if (m_Matches.empty()) return;
 
-    const float linePadding = ImGui::GetTextLineHeightWithSpacing() - ImGui::GetTextLineHeight();
+    const float linePadding = ImGui::GetStyle().ItemSpacing.y;
     CalcListPos(CallbackData);
 
     // Clear results if cursor moves away from current word
-    const int wordStart = static_cast<int>(CurrentWordStart - CallbackData->Buf);
-    const int wordEnd = static_cast<int>(CurrentWordEnd - CallbackData->Buf);
+    const int wordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
+    const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
 
-    if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
-        ClearResults();
-        return;
-    }
+    // if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
+    //     ClearResults();
+    //     return;
+    // }
 
-    // Display
+    // Display list
     ImGui::SetNextWindowPos(ImVec2(
-        ImGui::GetItemRectMin().x + xPos,
-        ImGui::GetItemRectMin().y + yPos + linePadding - ImGui::GetScrollY()));
-    ImGui::BeginTooltip();
-    for (const auto& match : Matches) {
-        ImGui::Selectable(match.c_str(), false);
+        ImGui::GetItemRectMin().x + m_XPos,
+        ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
+
+    if (ImGui::BeginTooltip()) {
+        for (const auto& match : m_Matches) {
+
+            if(ImGui::Selectable(match.c_str(), match == m_SelectedMatch)) {
+                m_SelectedMatch = match;
+            }
+
+            if (match == m_SelectedMatch) {
+                ImGui::SetItemDefaultFocus();
+            }
+
+            std::cout << m_SelectedMatch << "\n";
+        }
+
+        ImGui::EndTooltip();
     }
-    ImGui::EndTooltip();
 }
 
 void TextCompletion::ClearResults() {
-    Matches.clear();
-    CurrentWordStart = nullptr;
-    CurrentWordEnd = nullptr;
+    m_SelectedMatch.clear();
+    m_Matches.clear();
+    m_CurrentWordStart = nullptr;
+    m_CurrentWordEnd = nullptr;
 }
 
 void TextCompletion::CalcListPos(const ImGuiInputTextCallbackData* CallbackData) {
@@ -75,8 +94,9 @@ void TextCompletion::CalcListPos(const ImGuiInputTextCallbackData* CallbackData)
         linePos++;
     }
 
-    xPos = ImGui::CalcTextSize(CallbackData->Buf + CallbackData->CursorPos - linePos, CallbackData->Buf + CallbackData->CursorPos).x;
+    m_XPos = ImGui::CalcTextSize(CallbackData->Buf + CallbackData->CursorPos - linePos,
+        CallbackData->Buf + CallbackData->CursorPos).x;
 
-    yPos = ImGui::CalcTextSize(CallbackData->Buf, CallbackData->Buf + CallbackData->CursorPos).y;
-    yPos = (linePos != 0) ? yPos : yPos + ImGui::GetFontSize();
+    m_YPos = ImGui::CalcTextSize(CallbackData->Buf, CallbackData->Buf + CallbackData->CursorPos).y;
+    m_YPos = (linePos != 0) ? m_YPos : m_YPos + ImGui::GetFontSize();
 }
