@@ -5,6 +5,7 @@
 #ifndef TEXTCOMPLETION_H
 #define TEXTCOMPLETION_H
 #include <list>
+#include <mutex>
 #include <string>
 #include <vector>
 

@@ -6,6 +6,7 @@
 
 #include "TextCompletion.h"
 
+#include <imgui_internal.h>
 #include <iostream>
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
@@ -63,20 +64,23 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
         ImGui::GetItemRectMin().x + m_XPos,
         ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
 
-    if (ImGui::BeginTooltip()) {
-        for (const auto& match : m_Matches) {
+    if (ImGui::IsKeyReleased(ImGuiKey_DownArrow)) m_CurrentIndex++;
+    if (ImGui::IsKeyReleased(ImGuiKey_UpArrow)) m_CurrentIndex--;
+    m_CurrentIndex += m_Matches.size();
+    m_CurrentIndex %= m_Matches.size();
 
-            if(ImGui::Selectable(match.c_str(), match == m_SelectedMatch)) {
-                m_SelectedMatch = match;
+    if(ImGui::BeginTooltip()) {
+        for (int i = 0; i < m_Matches.size(); i++) {
+            const bool is_selected = (i == m_CurrentIndex);
+            if(ImGui::Selectable(m_Matches[i].c_str(), is_selected)) {
+                m_CurrentIndex = i;
+                m_SelectedMatch = m_Matches[i];
             }
 
-            if (match == m_SelectedMatch) {
+            if (is_selected) {
                 ImGui::SetItemDefaultFocus();
             }
-
-            std::cout << m_SelectedMatch << "\n";
         }
-
         ImGui::EndTooltip();
     }
 }
