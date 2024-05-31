@@ -41,57 +41,42 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
     static TextCompletion text_completion{};
     const auto* user_data = static_cast<InputTextCallback_UserData *>(data->UserData);
 
-    if (data->EventFlag == ImGuiInputTextFlags_CallbackAlways) {
-        /*
-#pragma region Cursor Control Example
-        static bool canInitCursorPos = true;
-        static bool canUpdateCursorPos = true;
-        static int lastCursorPos{-1};
-        static int moveCount{};
+    switch (data->EventFlag) {
+        case ImGuiInputTextFlags_CallbackAlways:
+            text_completion.DisplayMatches(data);
+            break;
+        case ImGuiInputTextFlags_CallbackEdit:
+            text_completion.PopulateMatches(data);
+            break;
+        case ImGuiInputTextFlags_CallbackCharFilter:
+            if (data->EventChar == '\t' && text_completion.canComplete) {
+                text_completion.m_CurrentIndex++;
+                text_completion.m_CurrentIndex %= text_completion.m_Matches.size();
 
-        // Testing how to handle cursor control
-        if (lastCursorPos == -1 && canInitCursorPos) {
-            lastCursorPos = data->CursorPos;
-            canInitCursorPos = false;
+                return 1;
+            }
+
+            break;
+        case ImGuiInputTextFlags_CallbackResize: {
+            // Resize string callback
+            // If for some reason we refuse the new length (BufTextLen) and/or capacity (BufSize) we need to set them back to what we want.
+            std::string* str = user_data->Str;
+            IM_ASSERT(data->Buf == str->c_str());
+            str->resize(data->BufTextLen);
+
+            // ReSharper disable once CppDFALocalValueEscapesFunction
+            data->Buf = const_cast<char *>(str->c_str());
+            break;
         }
-
-        if (data->CursorPos != lastCursorPos && canUpdateCursorPos) {
-            moveCount++;
-            std::cout << moveCount << "\n";
-            lastCursorPos = data->CursorPos;
-        }
-
-        if (moveCount >= 10 && canUpdateCursorPos) {
-            canUpdateCursorPos = false;
-        }
-
-        if (!canUpdateCursorPos) {
-            data->CursorPos = lastCursorPos;
-        }
-#pragma endregion
-        */
-        text_completion.DisplayMatches(data);
+        default:
+            if (user_data->ChainCallback) {
+                // Forward to user callback, if any
+                data->UserData = user_data->ChainCallbackUserData;
+                return user_data->ChainCallback(data);
+            }
+            break;
     }
-    else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
-        text_completion.PopulateMatches(data);
-    }
-    else if (data->EventFlag == ImGuiInputTextFlags_CallbackResize)
-    {
-        // Resize string callback
-        // If for some reason we refuse the new length (BufTextLen) and/or capacity (BufSize) we need to set them back to what we want.
-        std::string* str = user_data->Str;
-        IM_ASSERT(data->Buf == str->c_str());
-        str->resize(data->BufTextLen);
 
-        // ReSharper disable once CppDFALocalValueEscapesFunction
-        data->Buf = const_cast<char *>(str->c_str());
-    }
-    else if (user_data->ChainCallback)
-    {
-        // Forward to user callback, if any
-        data->UserData = user_data->ChainCallbackUserData;
-        return user_data->ChainCallback(data);
-    }
     return 0;
 }
 

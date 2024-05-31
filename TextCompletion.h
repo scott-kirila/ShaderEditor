@@ -13,11 +13,12 @@ class TextCompletion {
 public:
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
     void PopulateMatches(const ImGuiInputTextCallbackData* CallbackData);
-    void DisplayMatches(const ImGuiInputTextCallbackData* CallbackData);
+    void DisplayMatches(ImGuiInputTextCallbackData* CallbackData);
 
     std::vector<std::string> m_Matches{};
 
     bool canComplete{};
+    int m_CurrentIndex{};
 
 private:
     void ClearResults();
@@ -29,7 +30,6 @@ private:
     char* m_CurrentWordEnd{};
 
     std::string m_SelectedMatch{};
-    int m_CurrentIndex{};
 
     bool canInitCursorPos{true};
     bool canUpdateCursorPos{true};

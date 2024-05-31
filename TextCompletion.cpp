@@ -1,6 +1,9 @@
 //
 // Created by hetan on 5/28/2024.
 //
+#ifdef _WIN64
+#include "Windows.h"
+#endif
 
 #include "imgui.h"
 
@@ -8,6 +11,8 @@
 
 #include <imgui_internal.h>
 #include <iostream>
+
+#include "Callbacks.h"
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
@@ -45,7 +50,7 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 }
 
 // Should be called every frame.
-void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackData) {
+void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     if (m_Matches.empty()) return;
 
     const float linePadding = ImGui::GetStyle().ItemSpacing.y;
@@ -55,28 +60,29 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
     const int wordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
     const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
 
-    // if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
-    //     ClearResults();
-    //     return;
-    // }
+    if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
+        ClearResults();
+        return;
+    }
+
+    // ImGuiIO& io = ImGui::GetIO();
+    // io.AddKeyEvent(ImGuiMod_Ctrl,  (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS));
 
     // Display list
     ImGui::SetNextWindowPos(ImVec2(
         ImGui::GetItemRectMin().x + m_XPos,
         ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
 
-    if (ImGui::IsKeyPressed(ImGuiKey_DownArrow, false)) {
-        m_CurrentIndex++;
-        ImGui::GetIO().AddKeyEvent(ImGuiKey_UpArrow, false);
-    }
-
-    if (ImGui::IsKeyPressed(ImGuiKey_UpArrow, false)) {
-        m_CurrentIndex--;
-        ImGui::GetIO().AddKeyEvent(ImGuiKey_DownArrow, false);
-    }
-
-    m_CurrentIndex += m_Matches.size();
-    m_CurrentIndex %= m_Matches.size();
+    // if (ImGui::IsKeyPressed(ImGuiKey_DownArrow, false)) {
+    //     m_CurrentIndex++;
+    // }
+    //
+    // if (ImGui::IsKeyPressed(ImGuiKey_UpArrow, false)) {
+    //     m_CurrentIndex--;
+    // }
+    //
+    // m_CurrentIndex += m_Matches.size();
+    // m_CurrentIndex %= m_Matches.size();
 
     if(ImGui::BeginTooltip()) {
         for (int i = 0; i < m_Matches.size(); i++) {
