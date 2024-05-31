@@ -54,6 +54,19 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
                 text_completion.m_CurrentIndex %= text_completion.m_Matches.size();
 
                 return 1;
+            } else if (data->EventChar == '\n' && text_completion.canComplete) {
+                const char* currentMatch = text_completion.m_Matches[text_completion.m_CurrentIndex].c_str();
+
+                auto pos = (int)(text_completion.m_CurrentWordStart - data->Buf);
+                const auto length = static_cast<int>(text_completion.m_CurrentWordEnd - text_completion.m_CurrentWordStart);
+                std::cout << currentMatch << " || pos: " << pos << " || length: " << length << "\n";
+
+                // Can we trigger another callback from here?
+                // data->DeleteChars(data->CursorPos - length, length);
+                // data->InsertChars(data->CursorPos, currentMatch);
+                // data->InsertChars(data->CursorPos, " ");
+
+                return 1;
             }
 
             break;

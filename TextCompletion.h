@@ -19,6 +19,9 @@ public:
 
     bool canComplete{};
     int m_CurrentIndex{};
+    char* m_CurrentWordStart{};
+    char* m_CurrentWordEnd{};
+    std::string m_SelectedMatch{};
 
 private:
     void ClearResults();
@@ -26,10 +29,7 @@ private:
 
     float m_XPos{};
     float m_YPos{};
-    char* m_CurrentWordStart{};
-    char* m_CurrentWordEnd{};
 
-    std::string m_SelectedMatch{};
 
     bool canInitCursorPos{true};
     bool canUpdateCursorPos{true};
