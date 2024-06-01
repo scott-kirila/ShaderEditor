@@ -57,8 +57,10 @@ void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     CalcListPos(CallbackData);
 
     // Clear results if cursor moves away from current word
-    const int wordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
+    wordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
     const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
+
+
 
     if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
         ClearResults();
@@ -106,6 +108,7 @@ void TextCompletion::ClearResults() {
     m_Matches.clear();
     m_CurrentWordStart = nullptr;
     m_CurrentWordEnd = nullptr;
+    m_CurrentIndex = 0;
 }
 
 void TextCompletion::CalcListPos(const ImGuiInputTextCallbackData* CallbackData) {

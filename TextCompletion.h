@@ -14,6 +14,7 @@ public:
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
     void PopulateMatches(const ImGuiInputTextCallbackData* CallbackData);
     void DisplayMatches(ImGuiInputTextCallbackData* CallbackData);
+    void ClearResults();
 
     std::vector<std::string> m_Matches{};
 
@@ -23,8 +24,11 @@ public:
     char* m_CurrentWordEnd{};
     std::string m_SelectedMatch{};
 
+    int wordStart{};
+
+    bool doComplete{};
+
 private:
-    void ClearResults();
     void CalcListPos(const ImGuiInputTextCallbackData* CallbackData);
 
     float m_XPos{};
