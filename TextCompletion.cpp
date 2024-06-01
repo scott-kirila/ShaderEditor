@@ -32,6 +32,8 @@ std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* Cal
 }
 
 void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackData) {
+    if (m_DoComplete) return;
+
     ClearResults();
     GetCurrentWord(CallbackData);
 
@@ -45,7 +47,7 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 
     if (!m_Matches.empty()) {
         m_SelectedMatch = m_Matches[0];
-        canComplete = true;
+        m_CanComplete = true;
     }
 }
 
@@ -57,34 +59,20 @@ void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     CalcListPos(CallbackData);
 
     // Clear results if cursor moves away from current word
-    wordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
+    m_WordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
     const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
 
-
-
-    if (CallbackData->CursorPos < wordStart || CallbackData->CursorPos > wordEnd) {
+    if (CallbackData->CursorPos < m_WordStart || CallbackData->CursorPos > wordEnd) {
         ClearResults();
         return;
     }
 
-    // ImGuiIO& io = ImGui::GetIO();
-    // io.AddKeyEvent(ImGuiMod_Ctrl,  (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS));
-
     // Display list
+    m_XPos = m_XPos > ImGui::GetItemRectSize().x ? ImGui::GetItemRectSize().x : m_XPos;
+
     ImGui::SetNextWindowPos(ImVec2(
         ImGui::GetItemRectMin().x + m_XPos,
         ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
-
-    // if (ImGui::IsKeyPressed(ImGuiKey_DownArrow, false)) {
-    //     m_CurrentIndex++;
-    // }
-    //
-    // if (ImGui::IsKeyPressed(ImGuiKey_UpArrow, false)) {
-    //     m_CurrentIndex--;
-    // }
-    //
-    // m_CurrentIndex += m_Matches.size();
-    // m_CurrentIndex %= m_Matches.size();
 
     if(ImGui::BeginTooltip()) {
         for (int i = 0; i < m_Matches.size(); i++) {
@@ -102,8 +90,20 @@ void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     }
 }
 
+void TextCompletion::DoComplete(ImGuiInputTextCallbackData *data) {
+    if (!m_DoComplete) return;
+
+    const auto length = static_cast<int>(m_CurrentWordEnd - m_CurrentWordStart);
+    data->DeleteChars(m_WordStart, length);
+    data->InsertChars(data->CursorPos, m_Matches[m_CurrentIndex].c_str());
+    data->InsertChars(data->CursorPos, " ");
+
+    ClearResults();
+}
+
 void TextCompletion::ClearResults() {
-    canComplete = false;
+    m_CanComplete = false;
+    m_DoComplete = false;
     m_SelectedMatch.clear();
     m_Matches.clear();
     m_CurrentWordStart = nullptr;

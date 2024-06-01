@@ -5,36 +5,13 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "imgui.h"
 #include "imgui_internal.h"
-// #include "imstb_textedit.h"
 
 #include "Callbacks.h"
-
-#include <list>
-#include <vector>
-
 #include "TextCompletion.h"
-
-#define STB_TEXTEDIT_K_LEFT         0x200000 // keyboard input to move cursor left
-#define STB_TEXTEDIT_K_RIGHT        0x200001 // keyboard input to move cursor right
-#define STB_TEXTEDIT_K_UP           0x200002 // keyboard input to move cursor up
-#define STB_TEXTEDIT_K_DOWN         0x200003 // keyboard input to move cursor down
-#define STB_TEXTEDIT_K_LINESTART    0x200004 // keyboard input to move cursor to start of line
-#define STB_TEXTEDIT_K_LINEEND      0x200005 // keyboard input to move cursor to end of line
-#define STB_TEXTEDIT_K_TEXTSTART    0x200006 // keyboard input to move cursor to start of text
-#define STB_TEXTEDIT_K_TEXTEND      0x200007 // keyboard input to move cursor to end of text
-#define STB_TEXTEDIT_K_DELETE       0x200008 // keyboard input to delete selection or character under cursor
-#define STB_TEXTEDIT_K_BACKSPACE    0x200009 // keyboard input to delete selection or character left of cursor
-#define STB_TEXTEDIT_K_UNDO         0x20000A // keyboard input to perform undo
-#define STB_TEXTEDIT_K_REDO         0x20000B // keyboard input to perform redo
-#define STB_TEXTEDIT_K_WORDLEFT     0x20000C // keyboard input to move cursor left one word
-#define STB_TEXTEDIT_K_WORDRIGHT    0x20000D // keyboard input to move cursor right one word
-#define STB_TEXTEDIT_K_PGUP         0x20000E // keyboard input to move cursor up a page
-#define STB_TEXTEDIT_K_PGDOWN       0x20000F // keyboard input to move cursor down a page
-#define STB_TEXTEDIT_K_SHIFT        0x400000
-
 
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
 {
@@ -44,32 +21,21 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
     switch (data->EventFlag) {
         case ImGuiInputTextFlags_CallbackAlways:
             text_completion.DisplayMatches(data);
-
-            if (text_completion.doComplete) {
-                const auto length = static_cast<int>(text_completion.m_CurrentWordEnd - text_completion.m_CurrentWordStart);
-                data->DeleteChars(text_completion.wordStart, length);
-                data->InsertChars(data->CursorPos, text_completion.m_Matches[text_completion.m_CurrentIndex].c_str());
-                data->InsertChars(data->CursorPos, " ");
-
-                text_completion.doComplete = false;
-                text_completion.ClearResults();
-            }
+            text_completion.DoComplete(data);
             break;
         case ImGuiInputTextFlags_CallbackEdit:
-            if (!text_completion.doComplete) {
-                text_completion.PopulateMatches(data);
-            }
+            text_completion.PopulateMatches(data);
             break;
         case ImGuiInputTextFlags_CallbackCharFilter:
-            if (data->EventChar == '\t' && text_completion.canComplete) {
+            if (data->EventChar == '\t' && text_completion.m_CanComplete) {
                 text_completion.m_CurrentIndex++;
                 text_completion.m_CurrentIndex %= text_completion.m_Matches.size();
 
                 return 1;
             }
 
-            if (data->EventChar == '\n' && text_completion.canComplete) {
-                text_completion.doComplete = true;
+            if (data->EventChar == '\n' && text_completion.m_CanComplete) {
+                text_completion.m_DoComplete = true;
                 return 1;
             }
 
