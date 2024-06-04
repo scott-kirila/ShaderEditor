@@ -49,7 +49,7 @@ void Window::BeginLoop(const std::function<void(void)> &fcn) const {
 
         glfwSwapBuffers(m_Window);
 
-        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE)) {
+        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) || m_ShouldClose) {
             glfwSetWindowShouldClose(m_Window, true);
         }
     }

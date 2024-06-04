@@ -27,6 +27,7 @@ public:
     int m_ViewWidth{};
     int m_ViewHeight{};
     GLFWwindow* m_Window{};
+    bool m_ShouldClose{};
 };
 
 #endif //WINDOW_H
