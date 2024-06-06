@@ -6,15 +6,14 @@
 
 #include "TextCompletion.h"
 
+#include <algorithm>
 #include <imgui_internal.h>
 #include <iostream>
 #include <Windows.h>
 
-TextCompletion::~TextCompletion() {
-    delete m_CurrentWordStart;
-    delete m_CurrentWordEnd;
+TextCompletion::TextCompletion() {
+    std::sort(m_Dictionary.begin(), m_Dictionary.end());
 }
-
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
@@ -73,8 +72,12 @@ void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
         ));
 
     if(ImGui::BeginTooltip()) {
-        for (int i = 0; i < m_Matches.size(); i++) {
+        const int start = m_CurrentIndex <= m_MaxDisplayMatches ? 0 : m_CurrentIndex - m_MaxDisplayMatches;
+        const int end = m_CurrentIndex < m_MaxDisplayMatches ? 1 + 2 * m_MaxDisplayMatches : m_CurrentIndex + m_MaxDisplayMatches + 1;
+
+        for (int i = start; i < m_Matches.size() && i < end; i++) {
             const bool is_selected = (i == m_CurrentIndex);
+
             if(ImGui::Selectable(m_Matches[i].c_str(), is_selected)) {
                 m_CurrentIndex = i;
                 m_SelectedMatch = m_Matches[i];

@@ -19,7 +19,6 @@ add_executable(ShaderEditor main.cpp
         RenderingBase.h
         TextCompletion.cpp
         TextCompletion.h
-        TextCompletion.h
 )
 
 find_package(OpenGL REQUIRED)
