@@ -10,6 +10,7 @@
 
 class TextCompletion {
 public:
+    TextCompletion();
     ~TextCompletion();
 
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
@@ -43,7 +44,7 @@ private:
         "Supercalifragilisticexpialidocious"
     };
 
-    const std::list<std::string> m_Dictionary = {
+    std::vector<std::string> m_Dictionary = {
         // Internal
         "ViewportSize", "Time",
 

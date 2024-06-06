@@ -6,15 +6,19 @@
 
 #include "TextCompletion.h"
 
+#include <algorithm>
 #include <imgui_internal.h>
 #include <iostream>
 #include <Windows.h>
+
+TextCompletion::TextCompletion() {
+    std::sort(m_Dictionary.begin(), m_Dictionary.end());
+}
 
 TextCompletion::~TextCompletion() {
     delete m_CurrentWordStart;
     delete m_CurrentWordEnd;
 }
-
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
