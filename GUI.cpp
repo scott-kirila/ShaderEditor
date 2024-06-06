@@ -26,20 +26,20 @@ namespace ImGui {
         flags |= ImGuiInputTextFlags_CallbackResize;
         flags |= ImGuiInputTextFlags_CallbackAlways;
         flags |= ImGuiInputTextFlags_CallbackCharFilter;
-        // flags |= ImGuiInputTextFlags_CallbackCompletion;
         flags |= ImGuiInputTextFlags_CallbackEdit;
-        // flags |= ImGuiInputTextFlags_CallbackHistory;
 
         InputTextCallback_UserData cb_user_data;
         cb_user_data.Str = str;
         cb_user_data.ChainCallback = callback;
         cb_user_data.ChainCallbackUserData = user_data;
 
-        return InputTextMultiline(label, const_cast<char *>(str->c_str()), str->capacity() + 1, size, flags, callback, &cb_user_data);
+        return InputTextMultiline(label, const_cast<char *>(str->c_str()), str->capacity() + 1,
+            size, flags, callback, &cb_user_data);
     }
 }
 
-GUI::GUI(Window* window, Rendering::OpenGL* renderer, const float viewWidth, const float viewHeight, const char* glslVersion)
+GUI::GUI(const std::shared_ptr<Window>& window, const std::shared_ptr<Rendering::OpenGL>& renderer,
+    const float viewWidth, const float viewHeight, const char* glslVersion)
     : m_GlslVersion(glslVersion), m_FramebufferSize(viewWidth, viewHeight),
       m_Window(window), m_Renderer(renderer) {
     // Set up Dear ImGui context
@@ -85,6 +85,7 @@ GUI::~GUI() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    // delete m_IO;
 }
 
 void GUI::Loop() {

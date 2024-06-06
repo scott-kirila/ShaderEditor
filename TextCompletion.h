@@ -10,6 +10,8 @@
 
 class TextCompletion {
 public:
+    ~TextCompletion();
+
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
     void PopulateMatches(const ImGuiInputTextCallbackData* CallbackData);
     void DisplayMatches(ImGuiInputTextCallbackData* CallbackData);
@@ -29,11 +31,6 @@ public:
     bool m_DoComplete{};
 
 private:
-    void CalcListPos(const ImGuiInputTextCallbackData* CallbackData);
-
-    float m_XPos{};
-    float m_YPos{};
-
     const std::list<std::string> m_Dictionary = {
         "vec2", "vec3", "vec4",
         "int", "float",

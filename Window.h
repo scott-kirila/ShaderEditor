@@ -7,7 +7,8 @@
 
 #include <functional>
 
-class GLFWwindow;
+// class GLFWwindow;
+#include "GLFW/glfw3.h"
 
 class Window {
 public:
@@ -26,7 +27,7 @@ public:
 
     int m_ViewWidth{};
     int m_ViewHeight{};
-    GLFWwindow* m_Window{};
+    GLFWwindow* m_Window;
     bool m_ShouldClose{};
 };
 

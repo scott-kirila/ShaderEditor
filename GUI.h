@@ -7,13 +7,13 @@
 
 #include "imgui.h"
 
-class Shader;
 class Window;
 namespace Rendering { class OpenGL; }
 
 class GUI {
 public:
-    GUI(Window* window, Rendering::OpenGL* renderer, float viewWidth, float viewHeight, const char* glslVersion);
+    GUI(const std::shared_ptr<Window>& window, const std::shared_ptr<Rendering::OpenGL>& renderer,
+        float viewWidth, float viewHeight, const char* glslVersion);
     ~GUI();
 
     void Loop();
@@ -27,8 +27,8 @@ private:
 
     const char* m_GlslVersion;
     ImVec2 m_FramebufferSize;
-    Window* m_Window;
-    Rendering::OpenGL* m_Renderer;
+    std::shared_ptr<Window> m_Window;
+    std::shared_ptr<Rendering::OpenGL> m_Renderer;
     ImGuiIO* m_IO;
     bool m_ShowDemoWindow = true;
 };

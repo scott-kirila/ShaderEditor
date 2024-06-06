@@ -1,9 +1,6 @@
 //
 // Created by hetan on 5/28/2024.
 //
-#ifdef _WIN64
-#include "Windows.h"
-#endif
 
 #include "imgui.h"
 
@@ -11,8 +8,13 @@
 
 #include <imgui_internal.h>
 #include <iostream>
+#include <Windows.h>
 
-#include "Callbacks.h"
+TextCompletion::~TextCompletion() {
+    delete m_CurrentWordStart;
+    delete m_CurrentWordEnd;
+}
+
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData) {
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
@@ -54,9 +56,6 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 // Should be called every frame.
 void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     if (m_Matches.empty()) return;
-
-    const float linePadding = ImGui::GetStyle().ItemSpacing.y;
-    CalcListPos(CallbackData);
 
     // Clear results if cursor moves away from current word
     m_WordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
@@ -108,17 +107,4 @@ void TextCompletion::ClearResults() {
     m_CurrentWordStart = nullptr;
     m_CurrentWordEnd = nullptr;
     m_CurrentIndex = 0;
-}
-
-void TextCompletion::CalcListPos(const ImGuiInputTextCallbackData* CallbackData) {
-    int linePos{};
-    for (int i = CallbackData->CursorPos - 1; CallbackData->Buf[i] != '\n' && i > 0; i--) {
-        linePos++;
-    }
-
-    m_XPos = ImGui::CalcTextSize(CallbackData->Buf + CallbackData->CursorPos - linePos,
-        CallbackData->Buf + CallbackData->CursorPos).x;
-
-    m_YPos = ImGui::CalcTextSize(CallbackData->Buf, CallbackData->Buf + CallbackData->CursorPos).y;
-    m_YPos = (linePos != 0) ? m_YPos : m_YPos + ImGui::GetFontSize();
 }

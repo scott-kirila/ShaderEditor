@@ -11,6 +11,10 @@
 #include "Callbacks.h"
 #include "Window.h"
 
+void DeleteGLFWwindow(GLFWwindow* ptr) {
+    glfwDestroyWindow(ptr);
+}
+
 Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
 
