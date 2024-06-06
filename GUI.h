@@ -23,6 +23,8 @@ private:
     void LoopBody() const;
     void LoopTeardown() const;
 
+    void ShowMenuBar() const;
+
     const char* m_GlslVersion;
     ImVec2 m_FramebufferSize;
     Window* m_Window;

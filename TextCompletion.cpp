@@ -68,11 +68,10 @@ void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
     }
 
     // Display list
-    m_XPos = m_XPos > ImGui::GetItemRectSize().x ? ImGui::GetItemRectSize().x : m_XPos;
-
     ImGui::SetNextWindowPos(ImVec2(
-        ImGui::GetItemRectMin().x + m_XPos,
-        ImGui::GetItemRectMin().y + m_YPos + linePadding - ImGui::GetScrollY()));
+        CallbackData->Ctx->PlatformImeData.InputPos.x,
+        CallbackData->Ctx->PlatformImeData.InputPos.y + ImGui::GetTextLineHeight()
+        ));
 
     if(ImGui::BeginTooltip()) {
         for (int i = 0; i < m_Matches.size(); i++) {

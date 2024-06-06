@@ -127,31 +127,7 @@ void GUI::LoopSetup() {
 
 void GUI::LoopBody() const {
     {
-        if (ImGui::BeginMenuBar()) {
-            if (ImGui::BeginMenu("File")) {
-                ImGui::MenuItem("Open");
-                ImGui::MenuItem("Save", "Ctrl+S");
-                ImGui::MenuItem("Exit", "Alt+F4", &m_Window->m_ShouldClose);
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Renderer")) {
-                if (ImGui::BeginMenu("OpenGL")) {
-                    ImGui::Text("Version");
-                    ImGui::Separator();
-                    // ImGui::SeparatorText("Version");
-                    ImGui::MenuItem("330");
-                    ImGui::MenuItem("450");
-                    ImGui::EndMenu();
-                }
-                ImGui::MenuItem("Vulkan");
-                ImGui::MenuItem("DirectX");
-                ImGui::MenuItem("Metal");
-                ImGui::EndMenu();
-            }
-
-            ImGui::EndMenuBar();
-        }
+        ShowMenuBar();
 
         static std::string fragmentShaderString = m_GlslVersion + std::string("\n\nin vec2 TexCoords;\nout vec4 FragColor;\n\nuniform vec2 ViewportSize;\n\nuniform float Time;\n\nvoid main()\n{\n\tFragColor = vec4(vec3(0), 1);\n}");
 
@@ -212,5 +188,33 @@ void GUI::LoopTeardown() const {
         ImGui::RenderPlatformWindowsDefault();
 
         Window::BackupCurrentContext(backup_current_context);
+    }
+}
+
+void GUI::ShowMenuBar() const {
+    if (ImGui::BeginMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            ImGui::MenuItem("Open");
+            ImGui::MenuItem("Save", "Ctrl+S");
+            ImGui::MenuItem("Exit", "Alt+F4", &m_Window->m_ShouldClose);
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Renderer")) {
+            if (ImGui::BeginMenu("OpenGL")) {
+                ImGui::Text("Version");
+                ImGui::Separator();
+                // ImGui::SeparatorText("Version");
+                ImGui::MenuItem("330");
+                ImGui::MenuItem("450");
+                ImGui::EndMenu();
+            }
+            ImGui::MenuItem("Vulkan");
+            ImGui::MenuItem("DirectX");
+            ImGui::MenuItem("Metal");
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMenuBar();
     }
 }

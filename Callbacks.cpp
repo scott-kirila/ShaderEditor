@@ -29,7 +29,7 @@ int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)
         case ImGuiInputTextFlags_CallbackCharFilter:
             if (data->EventChar == '\t' && text_completion.m_CanComplete) {
                 text_completion.m_CurrentIndex++;
-                text_completion.m_CurrentIndex %= text_completion.m_Matches.size();
+                text_completion.m_CurrentIndex %= static_cast<int>(text_completion.m_Matches.size());
 
                 return 1;
             }
