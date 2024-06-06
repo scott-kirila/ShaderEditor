@@ -19,7 +19,7 @@ std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData* Cal
     char* wordEnd = CallbackData->Buf + CallbackData->CursorPos;
     char* wordStart = wordEnd;
     while (wordStart > CallbackData->Buf) {
-        if (!isalnum(wordStart[-1])) break;
+        if (!isalnum(wordStart[-1]) && wordStart[-1] != '_') break;
         wordStart--;
     }
 
