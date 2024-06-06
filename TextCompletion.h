@@ -11,7 +11,7 @@
 class TextCompletion {
 public:
     TextCompletion();
-    ~TextCompletion();
+    ~TextCompletion() = default;
 
     std::string GetCurrentWord(const ImGuiInputTextCallbackData* CallbackData);
     void PopulateMatches(const ImGuiInputTextCallbackData* CallbackData);
