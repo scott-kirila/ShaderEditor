@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <imgui_internal.h>
 #include <iostream>
-#include <Windows.h>
 
 TextCompletion::TextCompletion() {
     std::sort(m_Dictionary.begin(), m_Dictionary.end());

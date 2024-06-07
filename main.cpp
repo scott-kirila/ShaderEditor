@@ -7,7 +7,11 @@
 
 constexpr int g_ViewWidth = 1920;
 constexpr int g_ViewHeight = 1080;
-auto g_GlslVersion = "#version 460\n"; // 410 for Mac?
+#if _WIN64
+auto g_GlslVersion = "#version 460\n";
+#elif __APPLE__
+auto g_GlslVersion = "#version 410\n";
+#endif
 
 int main() {
     const auto window = std::make_shared<Window>(g_ViewWidth, g_ViewHeight);

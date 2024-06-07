@@ -74,7 +74,11 @@ int Callbacks::TextResizeCallback(ImGuiInputTextCallbackData *data) {
         // delete[] data->Buf;
         // data->Buf = const_cast<char *>(UserData->c_str());
         data->Buf = new char[data->BufTextLen];
+#if _WIN64
         strcpy_s(data->Buf, data->BufTextLen, str->c_str());
+#elif __APPLE__
+        std::strncpy(data->Buf, str->c_str(), data->BufTextLen);
+#endif
     }
 
     return 0;

@@ -18,6 +18,10 @@ public:
     void BeginLoop(const std::function<void(void)> &fcn) const;
     void GetWindowSize(int* x, int* y) const;
 
+    // no viable conversion from returned value of type
+    // 'GLFWglproc (const char *)' (aka 'void (*(const char *))()')
+    // to function return type
+    // 'std::function<void *(const char *)>'
     static std::function<void* (const char*)> GetProcAddress();
 
     static double GetTime();

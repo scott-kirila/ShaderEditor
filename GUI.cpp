@@ -11,8 +11,6 @@
 #include "Callbacks.h"
 #include "GUI.h"
 
-#include <Windows.h>
-
 #include "RenderingOpenGL.h"
 #include "Shader.h"
 #include "TextCompletion.h"

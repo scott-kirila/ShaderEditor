@@ -27,14 +27,23 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
 
     if (!m_Window)
     {
+#if __APPLE__
+        throw "Failed to create GLFW window.";
+#elif _WIN64
         throw std::exception("Failed to create GLFW window.");
+#endif
+
     }
 
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
     if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+#if __APPLE__
+        throw "Failed to initialize GLAD.";
+#elif _WIN64
         throw std::exception("Failed to initialize GLAD.");
+#endif
     }
 }
 
@@ -64,7 +73,13 @@ void Window::GetWindowSize(int* x, int* y) const {
 }
 
 std::function<void *(const char *)> Window::GetProcAddress() {
+#if _WIN64
     return glfwGetProcAddress;
+#elif __APPLE__
+    return [](const char* name) -> void* {
+        return reinterpret_cast<void*>(glfwGetProcAddress(name));
+    };
+#endif
 }
 
 double Window::GetTime() {
