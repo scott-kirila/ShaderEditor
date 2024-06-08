@@ -4,16 +4,9 @@
 
 #include "Window.h"
 
-#include <exception>
 #include <iostream>
 
-#include "glad/glad.h"
-
 #include "Callbacks.h"
-
-void DeleteGLFWwindow(GLFWwindow* ptr) {
-    glfwDestroyWindow(ptr);
-}
 
 Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
@@ -30,21 +23,12 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
 #if __APPLE__
         throw "Failed to create GLFW window.";
 #elif _WIN64
-        throw std::exception("Failed to create GLFW window.");
+        throw std::runtime_error("Failed to create GLFW window.");
 #endif
-
     }
 
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
-
-    if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
-#if __APPLE__
-        throw "Failed to initialize GLAD.";
-#elif _WIN64
-        throw std::exception("Failed to initialize GLAD.");
-#endif
-    }
 }
 
 Window::~Window() {
@@ -72,16 +56,6 @@ void Window::GetWindowSize(int* x, int* y) const {
     glfwGetFramebufferSize(m_Window, x, x);
 }
 
-std::function<void *(const char *)> Window::GetProcAddress() {
-#if _WIN64
-    return glfwGetProcAddress;
-#elif __APPLE__
-    return [](const char* name) -> void* {
-        return reinterpret_cast<void*>(glfwGetProcAddress(name));
-    };
-#endif
-}
-
 double Window::GetTime() {
     return glfwGetTime();
 }
@@ -92,5 +66,9 @@ GLFWwindow* Window::GetCurrentContext() {
 
 void Window::BackupCurrentContext(GLFWwindow* current_context) {
     glfwMakeContextCurrent(current_context);
+}
+
+void* Window::GetProcAddress(const char *procname) {
+    return reinterpret_cast<void*>(glfwGetProcAddress(procname));
 }
 

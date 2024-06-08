@@ -12,6 +12,7 @@ using namespace Rendering;
 
 OpenGL::OpenGL(Window* window, const char* shaderVersion)
     : Base(window, shaderVersion) {
+    gladLoadGLLoader(Window::GetProcAddress);
 
     m_Shader = std::make_unique<Shader>(shaderVersion);
 
@@ -108,7 +109,6 @@ void OpenGL::Draw() const {
 
     const int u_Resolution = glGetUniformLocation(m_Shader->m_ShaderProgram, "Resolution");
     glUniform2f(u_Resolution, static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y));
-    // std::cout << m_ViewportSize.x << ", " << m_ViewportSize.y << "\n";
 
     const int u_Time = glGetUniformLocation(m_Shader->m_ShaderProgram, "Time");
     glUniform1f(u_Time, static_cast<float>(Window::GetTime()));
@@ -119,7 +119,6 @@ void OpenGL::Draw() const {
 }
 
 void OpenGL::PostRender(const int &x, const int &y) const {
-
     glViewport(0, 0, x, y);
     glClearColor(m_ClearColor.x * m_ClearColor.w, m_ClearColor.y * m_ClearColor.w, m_ClearColor.z * m_ClearColor.w, m_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);

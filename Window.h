@@ -19,17 +19,17 @@ public:
     void BeginLoop(const std::function<void(void)> &fcn) const;
     void GetWindowSize(int* x, int* y) const;
 
-    static std::function<void* (const char*)> GetProcAddress();
-
     static double GetTime();
 
     static GLFWwindow* GetCurrentContext();
     static void BackupCurrentContext(GLFWwindow* current_context);
+    static void* GetProcAddress(const char* procname);
 
     int m_ViewWidth{};
     int m_ViewHeight{};
     GLFWwindow* m_Window;
     bool m_ShouldClose{};
+
 };
 
 #endif //WINDOW_H

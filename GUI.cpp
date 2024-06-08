@@ -12,7 +12,6 @@
 
 #include "Callbacks.h"
 #include "Shader.h"
-#include "TextCompletion.h"
 
 namespace ImGui {
     bool InputTextMultiline(const char* label, std::string* str, const ImVec2& size, ImGuiInputTextFlags flags,
@@ -177,7 +176,7 @@ void GUI::LoopBody() const {
         m_Renderer->Render();
         m_Renderer->Draw();
 
-        ImGui::Image(reinterpret_cast<ImTextureID>(m_Renderer->m_TextureColorBuffer),
+        ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(m_Renderer->m_TextureColorBuffer)),
             ImVec2(
                 static_cast<float>(m_Renderer->m_FramebufferSize.x),
                 static_cast<float>(m_Renderer->m_FramebufferSize.y)),
