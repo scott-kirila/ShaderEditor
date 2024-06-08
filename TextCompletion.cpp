@@ -39,7 +39,8 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 
     if (const int StringLength = static_cast<int>(m_CurrentWordEnd - m_CurrentWordStart); StringLength != 0) {
         for (const auto& word : m_Dictionary) {
-            if (word.compare(0, StringLength, m_CurrentWordStart, StringLength) == 0) {
+            if (word.compare(0, StringLength, m_CurrentWordStart, StringLength) == 0 &&
+                (word.size() > StringLength)) {
                 m_Matches.push_back(word);
             }
         }
@@ -96,7 +97,7 @@ void TextCompletion::DoComplete(ImGuiInputTextCallbackData *data) {
     const auto length = static_cast<int>(m_CurrentWordEnd - m_CurrentWordStart);
     data->DeleteChars(m_WordStart, length);
     data->InsertChars(data->CursorPos, m_Matches[m_CurrentIndex].c_str());
-    data->InsertChars(data->CursorPos, " ");
+    // data->InsertChars(data->CursorPos, " ");
 
     ClearResults();
 }
