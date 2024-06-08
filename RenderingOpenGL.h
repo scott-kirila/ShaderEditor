@@ -8,9 +8,8 @@
 #include <memory>
 
 #include "RenderingBase.h"
-
-class Window;
-class Shader;
+#include "Shader.h"
+#include "Window.h"
 
 namespace Rendering {
 

@@ -8,8 +8,6 @@
 
 #include "glad/glad.h"
 
-#include "Shader.h"
-
 using namespace Rendering;
 
 OpenGL::OpenGL(Window* window, const char* shaderVersion)
