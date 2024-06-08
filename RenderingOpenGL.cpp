@@ -37,11 +37,11 @@ OpenGL::OpenGL(Window* window, const char* shaderVersion)
     // Framebuffer color attachment
     glGenTextures(1, &m_TextureColorBuffer);
     glBindTexture(GL_TEXTURE_2D, m_TextureColorBuffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
         m_FramebufferSize.x, m_FramebufferSize.y,
         0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
         m_TextureColorBuffer, 0);
 
@@ -82,9 +82,9 @@ void OpenGL::Render() {
         glViewport(0, 0, m_ViewportSize.x, m_ViewportSize.y);
 
         glBindTexture(GL_TEXTURE_2D, m_TextureColorBuffer);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_FramebufferSize.x, m_FramebufferSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_FramebufferSize.x, m_FramebufferSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureColorBuffer, 0);
 
         glGenRenderbuffers(1, &m_RenderBuffer);
@@ -99,6 +99,9 @@ void OpenGL::Render() {
 }
 
 void OpenGL::Draw() const {
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -106,7 +109,8 @@ void OpenGL::Draw() const {
     glUseProgram(m_Shader->m_ShaderProgram);
 
     const int u_ViewportSize = glGetUniformLocation(m_Shader->m_ShaderProgram, "ViewportSize");
-    glUniform2i(u_ViewportSize, m_ViewportSize.x, m_ViewportSize.y);
+    glUniform2f(u_ViewportSize, static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y));
+    // std::cout << m_ViewportSize.x << ", " << m_ViewportSize.y << "\n";
 
     const int u_Time = glGetUniformLocation(m_Shader->m_ShaderProgram, "Time");
     glUniform1f(u_Time, static_cast<float>(Window::GetTime()));

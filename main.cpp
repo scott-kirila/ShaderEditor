@@ -8,7 +8,7 @@
 constexpr int g_ViewWidth = 1920;
 constexpr int g_ViewHeight = 1080;
 #if _WIN64
-auto g_GlslVersion = "#version 460\n";
+auto g_GlslVersion = "#version 330\n";
 #elif __APPLE__
 auto g_GlslVersion = "#version 410\n";
 #endif
