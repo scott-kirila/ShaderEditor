@@ -1,16 +1,15 @@
 //
-// Created by hetan on 2024/04/28.
+// Created by Scott Kirila on 2024/04/28.
 //
 
+#include "Callbacks.h"
+
 #include <cstdio>
-#include <iostream>
 #include <string>
 #include <vector>
 
-#include "imgui.h"
 #include "imgui_internal.h"
 
-#include "Callbacks.h"
 #include "TextCompletion.h"
 
 int Callbacks::InputTextCallback(ImGuiInputTextCallbackData* data)

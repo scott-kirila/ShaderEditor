@@ -1,14 +1,14 @@
 //
-// Created by hetan on 5/28/2024.
+// Created by Scott Kirila on 5/28/2024.
 //
-
-#include "imgui.h"
 
 #include "TextCompletion.h"
 
 #include <algorithm>
-#include <imgui_internal.h>
 #include <iostream>
+
+#include "imgui.h"
+#include "imgui_internal.h"
 
 TextCompletion::TextCompletion() {
     std::sort(m_Dictionary.begin(), m_Dictionary.end());
@@ -53,7 +53,7 @@ void TextCompletion::PopulateMatches(const ImGuiInputTextCallbackData* CallbackD
 }
 
 // Should be called every frame.
-void TextCompletion::DisplayMatches(ImGuiInputTextCallbackData *CallbackData) {
+void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackData) {
     if (m_Matches.empty()) return;
 
     // Clear results if cursor moves away from current word
@@ -97,7 +97,6 @@ void TextCompletion::DoComplete(ImGuiInputTextCallbackData *data) {
     const auto length = static_cast<int>(m_CurrentWordEnd - m_CurrentWordStart);
     data->DeleteChars(m_WordStart, length);
     data->InsertChars(data->CursorPos, m_Matches[m_CurrentIndex].c_str());
-    // data->InsertChars(data->CursorPos, " ");
 
     ClearResults();
 }

@@ -2,14 +2,14 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include <iostream>
+#include "Window.h"
+
 #include <exception>
+#include <iostream>
 
 #include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "Callbacks.h"
-#include "Window.h"
 
 void DeleteGLFWwindow(GLFWwindow* ptr) {
     glfwDestroyWindow(ptr);

@@ -2,19 +2,17 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
-#include <iostream>
-
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "GLFW/glfw3.h"
-
-#include "Callbacks.h"
 #include "GUI.h"
 
-#include "RenderingOpenGL.h"
+#include <iostream>
+
+#include "GLFW/glfw3.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+#include "Callbacks.h"
 #include "Shader.h"
 #include "TextCompletion.h"
-#include "Window.h"
 
 namespace ImGui {
     bool InputTextMultiline(const char* label, std::string* str, const ImVec2& size, ImGuiInputTextFlags flags,
@@ -67,8 +65,31 @@ GUI::GUI(const std::shared_ptr<Window>& window, const std::shared_ptr<Rendering:
         style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.1, 0.1, 0.1, 1.0 };
         style.Colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.0, 0.0, 0.0, 1.0 };
 
-        style.FrameRounding = 5.0f;
-        style.TabRounding = 5.0f;
+        style.FrameRounding = 8.0f;
+
+        style.WindowPadding = ImVec2(5.0f, 1.0f);
+        style.FramePadding = ImVec2(5.0f, 2.0f);
+        style.ItemSpacing = ImVec2(10.0f, 1.0f);
+        style.ItemInnerSpacing = ImVec2(2.0f, 2.0f);
+        style.TouchExtraPadding = ImVec2(0.0f, 0.0f);
+        style.IndentSpacing = 21.0f;
+        style.ScrollbarSize = 14.0f;
+        style.GrabMinSize = 14.0f;
+
+        style.WindowBorderSize = 1.0f;
+        style.ChildBorderSize = 1.0f;
+        style.PopupBorderSize = 1.0f;
+        style.FrameBorderSize = 1.0f;
+        style.TabBorderSize = 1.0f;
+        style.TabBarBorderSize = 1.0f;
+
+        style.WindowRounding = 6.0f;
+        style.ChildRounding = 6.0f;
+        style.FrameRounding = 8.0f;
+        style.PopupRounding = 0.0f;
+        style.ScrollbarRounding = 9.0f;
+        style.GrabRounding = 0.0f;
+        style.TabRounding = 12.0f;
     }
 
     m_IO = &io;
@@ -83,7 +104,6 @@ GUI::~GUI() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    // delete m_IO;
 }
 
 void GUI::Loop() {

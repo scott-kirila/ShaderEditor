@@ -5,6 +5,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <memory>
+
 #include "RenderingBase.h"
 
 class Window;

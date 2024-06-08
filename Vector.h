@@ -1,5 +1,5 @@
 //
-// Created by hetan on 5/15/2024.
+// Created by Scott Kirila on 5/15/2024.
 //
 
 #ifndef VECTOR_H

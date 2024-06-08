@@ -1,9 +1,8 @@
 //
-// Created by hetan on 5/15/2024.
+// Created by Scott Kirila on 5/15/2024.
 //
 
 #include "RenderingBase.h"
-#include "Window.h"
 
 using namespace Rendering;
 

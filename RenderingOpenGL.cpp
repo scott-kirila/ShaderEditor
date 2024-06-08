@@ -2,13 +2,13 @@
 // Created by Scott Kirila on 2024/04/29.
 //
 
+#include "RenderingOpenGL.h"
+
 #include <iostream>
 
 #include "glad/glad.h"
 
-#include "RenderingOpenGL.h"
 #include "Shader.h"
-#include "Window.h"
 
 using namespace Rendering;
 
@@ -108,8 +108,8 @@ void OpenGL::Draw() const {
 
     glUseProgram(m_Shader->m_ShaderProgram);
 
-    const int u_ViewportSize = glGetUniformLocation(m_Shader->m_ShaderProgram, "ViewportSize");
-    glUniform2f(u_ViewportSize, static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y));
+    const int u_Resolution = glGetUniformLocation(m_Shader->m_ShaderProgram, "Resolution");
+    glUniform2f(u_Resolution, static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y));
     // std::cout << m_ViewportSize.x << ", " << m_ViewportSize.y << "\n";
 
     const int u_Time = glGetUniformLocation(m_Shader->m_ShaderProgram, "Time");

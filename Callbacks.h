@@ -1,5 +1,5 @@
 //
-// Created by hetan on 2024/04/28.
+// Created by Scott Kirila on 2024/04/28.
 //
 
 #ifndef CALLBACKS_H
@@ -8,8 +8,6 @@
 #include <iostream>
 
 #include "imgui.h"
-
-// #include "TextCompletion.h"
 
 struct InputTextCallback_UserData {
 
@@ -25,8 +23,6 @@ public:
     static int TextResizeCallback(ImGuiInputTextCallbackData* data);
 
     static void GlfwErrorCallback(int error, const char* description);
-
-    // TextCompletion m_TextCompleter;
 };
 
 #endif //CALLBACKS_H

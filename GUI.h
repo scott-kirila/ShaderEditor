@@ -5,10 +5,12 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include <memory>
+
 #include "imgui.h"
 
-class Window;
-namespace Rendering { class OpenGL; }
+#include "RenderingOpenGL.h"
+#include "Window.h"
 
 class GUI {
 public:

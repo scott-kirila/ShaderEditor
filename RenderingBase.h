@@ -1,13 +1,12 @@
 //
-// Created by hetan on 5/15/2024.
+// Created by Scott Kirila on 5/15/2024.
 //
 
 #ifndef RENDERERBASE_H
 #define RENDERERBASE_H
 
 #include "Vector.h"
-
-class Window;
+#include "Window.h"
 
 namespace Rendering {
 
