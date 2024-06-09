@@ -14,8 +14,7 @@ namespace Rendering
     {
     public:
         Base(Window *window, const char *shaderVersion);
-
-        ~Base() = default;
+        virtual ~Base() = default;
 
         virtual void Render() = 0;
 

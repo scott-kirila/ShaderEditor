@@ -12,7 +12,7 @@
 
 TextCompletion::TextCompletion()
 {
-    std::sort(m_Dictionary.begin(), m_Dictionary.end());
+    std::ranges::sort(m_Dictionary);
 }
 
 std::string TextCompletion::GetCurrentWord(const ImGuiInputTextCallbackData *CallbackData)
@@ -67,9 +67,9 @@ void TextCompletion::DisplayMatches(const ImGuiInputTextCallbackData *CallbackDa
 
     // Clear results if cursor moves away from current word
     m_WordStart = static_cast<int>(m_CurrentWordStart - CallbackData->Buf);
-    const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
 
-    if (CallbackData->CursorPos < m_WordStart || CallbackData->CursorPos > wordEnd)
+    if (const int wordEnd = static_cast<int>(m_CurrentWordEnd - CallbackData->Buf);
+        CallbackData->CursorPos < m_WordStart || CallbackData->CursorPos > wordEnd)
     {
         ClearResults();
         return;

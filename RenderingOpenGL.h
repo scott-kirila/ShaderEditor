@@ -17,8 +17,7 @@ namespace Rendering
     {
     public:
         OpenGL(Window *window, const char *shaderVersion);
-
-        ~OpenGL();
+        ~OpenGL() override;
 
         void Render() override;
 
