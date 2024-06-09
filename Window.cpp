@@ -8,7 +8,8 @@
 
 #include "Callbacks.h"
 
-Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight) {
+Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidth), m_ViewHeight(viewHeight)
+{
     glfwSetErrorCallback(Callbacks::GlfwErrorCallback);
 
     glfwInit();
@@ -20,25 +21,24 @@ Window::Window(const int viewWidth, const int viewHeight) : m_ViewWidth(viewWidt
 
     if (!m_Window)
     {
-#if __APPLE__
-        throw "Failed to create GLFW window.";
-#elif _WIN64
         throw std::runtime_error("Failed to create GLFW window.");
-#endif
     }
 
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 }
 
-Window::~Window() {
+Window::~Window()
+{
     std::cout << "Window\n";
     glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
 
-void Window::BeginLoop(const std::function<void(void)> &fcn) const {
-    while (!glfwWindowShouldClose(m_Window)) {
+void Window::BeginLoop(const std::function<void(void)> &fcn) const
+{
+    while (!glfwWindowShouldClose(m_Window))
+    {
 
         glfwPollEvents();
 
@@ -46,29 +46,35 @@ void Window::BeginLoop(const std::function<void(void)> &fcn) const {
 
         glfwSwapBuffers(m_Window);
 
-        if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) || m_ShouldClose) {
+        if (m_ShouldClose)
+        {
             glfwSetWindowShouldClose(m_Window, true);
         }
     }
 }
 
-void Window::GetWindowSize(int* x, int* y) const {
+void Window::GetWindowSize(int *x, int *y) const
+{
     glfwGetFramebufferSize(m_Window, x, x);
 }
 
-double Window::GetTime() {
+double Window::GetTime()
+{
     return glfwGetTime();
 }
 
-GLFWwindow* Window::GetCurrentContext() {
+GLFWwindow *Window::GetCurrentContext()
+{
     return glfwGetCurrentContext();
 }
 
-void Window::BackupCurrentContext(GLFWwindow* current_context) {
-    glfwMakeContextCurrent(current_context);
+void Window::BackupCurrentContext(GLFWwindow *currentContext)
+{
+    glfwMakeContextCurrent(currentContext);
 }
 
-void* Window::GetProcAddress(const char *procname) {
-    return reinterpret_cast<void*>(glfwGetProcAddress(procname));
+void *Window::GetProcAddress(const char *procName)
+{
+    return reinterpret_cast<void *>(glfwGetProcAddress(procName));
 }
 

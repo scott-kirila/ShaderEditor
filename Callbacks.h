@@ -9,20 +9,20 @@
 
 #include "imgui.h"
 
-struct InputTextCallback_UserData {
-
-    std::string* Str{};
+struct InputTextCallback_UserData
+{
+    std::string *Str{};
     ImGuiInputTextCallback ChainCallback{};
-    void* ChainCallbackUserData{};
+    void *ChainCallbackUserData{};
 };
 
-class Callbacks {
-public:
-    static int InputTextCallback(ImGuiInputTextCallbackData* data);
+struct Callbacks
+{
+    static int InputTextCallback(ImGuiInputTextCallbackData *data);
 
-    static int TextResizeCallback(ImGuiInputTextCallbackData* data);
+    static int TextResizeCallback(ImGuiInputTextCallbackData *data);
 
-    static void GlfwErrorCallback(int error, const char* description);
+    static void GlfwErrorCallback(int error, const char *description);
 };
 
 #endif //CALLBACKS_H

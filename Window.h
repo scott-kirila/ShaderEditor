@@ -11,25 +11,28 @@
 
 #include "GLFW/glfw3.h"
 
-class Window {
-public:
+struct Window
+{
     Window(int viewWidth, int viewHeight);
+
     ~Window();
 
     void BeginLoop(const std::function<void(void)> &fcn) const;
-    void GetWindowSize(int* x, int* y) const;
+
+    void GetWindowSize(int *x, int *y) const;
 
     static double GetTime();
 
-    static GLFWwindow* GetCurrentContext();
-    static void BackupCurrentContext(GLFWwindow* current_context);
-    static void* GetProcAddress(const char* procname);
+    static GLFWwindow *GetCurrentContext();
+
+    static void BackupCurrentContext(GLFWwindow *currentContext);
+
+    static void *GetProcAddress(const char *procName);
 
     int m_ViewWidth{};
     int m_ViewHeight{};
-    GLFWwindow* m_Window;
+    GLFWwindow *m_Window;
     bool m_ShouldClose{};
-
 };
 
 #endif //WINDOW_H

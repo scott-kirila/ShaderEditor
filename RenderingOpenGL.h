@@ -11,15 +11,19 @@
 #include "Shader.h"
 #include "Window.h"
 
-namespace Rendering {
-
-    class OpenGL final : public Base {
+namespace Rendering
+{
+    class OpenGL final : public Base
+    {
     public:
-        OpenGL(Window* window, const char* shaderVersion);
-        ~OpenGL() override;
+        OpenGL(Window *window, const char *shaderVersion);
+
+        ~OpenGL();
 
         void Render() override;
+
         void Draw() const override;
+
         void PostRender(const int &x, const int &y) const override;
 
         std::unique_ptr<Shader> m_Shader;

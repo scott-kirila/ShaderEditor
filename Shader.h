@@ -7,24 +7,27 @@
 
 #include <string>
 
-class Shader {
+class Shader
+{
 public:
-	explicit Shader(const char* glslVersion);
-	~Shader();
+    explicit Shader(const char *glslVersion);
 
-	void CompileShaderProgram();
+    ~Shader();
 
-	std::string m_VertexShaderSource;
-	std::string m_FragmentShaderSource;
-	unsigned int m_ShaderProgram{};
+    void CompileShaderProgram();
+
+    std::string m_VertexShaderSource;
+    std::string m_FragmentShaderSource;
+    unsigned int m_ShaderProgram{};
 
 private:
-	void CompileVertexShader();
-	void CompileFragmentShader();
+    void CompileVertexShader();
 
-	unsigned int m_VertexShader{};
-	unsigned int m_FragmentShader{};
-	const char* m_GlslVersion{};
+    void CompileFragmentShader();
+
+    unsigned int m_VertexShader{};
+    unsigned int m_FragmentShader{};
+    const char *m_GlslVersion{};
 };
 
 #endif //SHADER_H

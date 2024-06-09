@@ -12,27 +12,31 @@
 #include "RenderingOpenGL.h"
 #include "Window.h"
 
-class GUI {
+class GUI
+{
 public:
-    GUI(const std::shared_ptr<Window>& window, const std::shared_ptr<Rendering::OpenGL>& renderer,
-        float viewWidth, float viewHeight, const char* glslVersion);
+    GUI(const std::shared_ptr<Window> &window, const std::shared_ptr<Rendering::OpenGL> &renderer,
+        float viewWidth, float viewHeight, const char *glslVersion);
+
     ~GUI();
 
     void Loop();
 
 private:
     void LoopSetup();
+
     void LoopBody() const;
+
     void LoopTeardown() const;
 
     void ShowMenuBar() const;
 
-    const char* m_GlslVersion;
+    const char *m_GlslVersion;
     ImVec2 m_FramebufferSize;
     std::shared_ptr<Window> m_Window;
     std::shared_ptr<Rendering::OpenGL> m_Renderer;
-    ImGuiIO* m_IO;
-    bool m_ShowDemoWindow = true;
+    ImGuiIO *m_IO;
+    bool m_ShowDemoWindow = false;
 };
 
 #endif //GUI_H
